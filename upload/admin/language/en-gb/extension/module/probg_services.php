@@ -1,0 +1,26 @@
+<?php
+$_['heading_title'] = 'ProBG Services';
+$_['text_extension'] = 'Extensions';
+$_['text_success'] = 'Success: ProBG Services settings have been saved.';
+$_['text_edit'] = 'ProBG Services settings';
+$_['text_enabled'] = 'Enabled';
+$_['text_disabled'] = 'Disabled';
+$_['text_home'] = 'Home';
+$_['tab_general'] = 'General';
+$_['tab_features'] = 'Features';
+$_['entry_status'] = 'Status';
+$_['entry_cache_status'] = 'Caching';
+$_['entry_version'] = 'Version';
+$_['button_save'] = 'Save';
+$_['button_cancel'] = 'Cancel';
+$_['text_stage_one'] = 'Stage 1 builds the module foundation and prepares the shared model for OpenCart 3 and OpenCart 4.';
+$_['text_completed'] = 'Implemented in Stage 1';
+$_['feature_structure'] = 'Base OpenCart 3 MVC-L structure and OCMOD package.';
+$_['feature_database'] = 'Installation schema for categories, services, images, related services, and enquiries.';
+$_['feature_permissions'] = 'Automatic administrator access/modify permissions.';
+$_['feature_languages'] = 'Bulgarian and English administration language files.';
+$_['feature_documentation'] = 'README, CHANGELOG, and technical architecture, database, compatibility, and roadmap documentation.';
+$_['feature_opencart4'] = 'Documented strategy for a functionally synchronized OpenCart 4 edition.';
+$_['text_next_stage'] = 'Next stage';
+$_['text_next_stage_description'] = 'Stage 2: complete administration management for service categories.';
+$_['error_permission'] = 'Warning: You do not have permission to modify ProBG Services.';
