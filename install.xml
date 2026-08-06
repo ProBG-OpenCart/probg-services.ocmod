@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>ProBG Services</name>
+  <code>probg_services</code>
+  <version>0.1.0-dev</version>
+  <author>ProBG</author>
+  <link>https://probg.com/</link>
+  <file path="admin/controller/common/column_left.php">
+    <operation>
+      <search><![CDATA[if ($this->user->hasPermission('access', 'catalog/information')) {]]></search>
+      <add position="before"><![CDATA[
+        if ($this->user->hasPermission('access', 'extension/module/probg_services')) {
+            $data['menus'][] = array(
+                'id'       => 'menu-probg-services',
+                'icon'     => 'fa-briefcase',
+                'name'     => 'ProBG Services',
+                'href'     => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true),
+                'children' => array()
+            );
+        }
+      ]]></add>
+    </operation>
+  </file>
+</modification>
