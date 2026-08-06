@@ -1,0 +1,26 @@
+<?php
+$_['heading_title'] = 'ProBG Services';
+$_['text_extension'] = 'Разширения';
+$_['text_success'] = 'Настройките на ProBG Services са записани успешно.';
+$_['text_edit'] = 'Настройки на ProBG Services';
+$_['text_enabled'] = 'Включено';
+$_['text_disabled'] = 'Изключено';
+$_['text_home'] = 'Начало';
+$_['tab_general'] = 'Основни настройки';
+$_['tab_features'] = 'Възможности';
+$_['entry_status'] = 'Статус';
+$_['entry_cache_status'] = 'Кеширане';
+$_['entry_version'] = 'Версия';
+$_['button_save'] = 'Запази';
+$_['button_cancel'] = 'Отказ';
+$_['text_stage_one'] = 'Етап 1 изгражда основата на модула и подготвя общия модел за OpenCart 3 и OpenCart 4.';
+$_['text_completed'] = 'Реализирано в Етап 1';
+$_['feature_structure'] = 'Основна OpenCart 3 MVC-L структура и OCMOD пакет.';
+$_['feature_database'] = 'Инсталационна схема за категории, услуги, изображения, свързани услуги и запитвания.';
+$_['feature_permissions'] = 'Автоматично добавяне на администраторски access/modify права.';
+$_['feature_languages'] = 'Български и английски административни езикови файлове.';
+$_['feature_documentation'] = 'README, CHANGELOG и техническа документация за архитектура, база данни, съвместимост и етапи.';
+$_['feature_opencart4'] = 'Документирана стратегия за функционално синхронизирана версия за OpenCart 4.';
+$_['text_next_stage'] = 'Следващ етап';
+$_['text_next_stage_description'] = 'Етап 2: пълно административно управление на категориите услуги.';
+$_['error_permission'] = 'Нямате права за промяна на ProBG Services.';
