@@ -12,13 +12,30 @@ Status: Completed
 - OpenCart 4 architecture and compatibility strategy
 - README, CHANGELOG, architecture, database, compatibility, and documentation-policy files
 
-## Stage 2 — Service categories (`0.2.0`)
-Status: Next
+## Stage 2 — Service categories (`0.2.0-dev`)
+Status: Completed
 
-Full category CRUD, multi-language fields, parent categories, images, icons, stores, SEO metadata, SEO URL automation, filters, validation, and documentation updates.
+- Full category CRUD
+- Multi-language title, subtitle, short description and HTML description
+- Parent categories
+- Images and icon field
+- Multi-store assignment
+- Meta Title, Meta Description and Meta Keywords
+- SEO URLs through the standard OpenCart `seo_url` table
+- Automatic Meta Title when empty
+- Automatic SEO URL generation when empty
+- Bulgarian transliteration for generated SEO URLs
+- Collision-safe generated SEO URLs
+- Filters by title, parent and status
+- Pagination, permissions and validation
+- Bulgarian and English administration UI
+- ProBG Services administration submenu
+- README and CHANGELOG updates
 
 ## Stage 3 — Services administration (`0.3.0`)
-Status: Planned
+Status: Next
+
+Service CRUD, categories, multi-language content, main and social images, gallery, pricing controls, enquiry enable/disable, related services, recommended products, stores, ordering, publishing status and SEO fields.
 
 ## Stage 4 — Public pages (`0.4.0`)
 Status: Planned
