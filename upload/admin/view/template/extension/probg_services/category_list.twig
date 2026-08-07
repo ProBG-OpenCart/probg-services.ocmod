@@ -35,7 +35,9 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
- var url='index.php?route=extension/probg_services/category&user_token={{ user_token|default('') }}';
+ var params = new URLSearchParams(window.location.search);
+ var token = params.get('user_token') || '';
+ var url='index.php?route=extension/probg_services/category&user_token='+encodeURIComponent(token);
  var name=$('input[name=filter_name]').val(); if(name) url+='&filter_name='+encodeURIComponent(name);
  var parent=$('select[name=filter_parent_id]').val(); if(parent!=='') url+='&filter_parent_id='+encodeURIComponent(parent);
  var status=$('select[name=filter_status]').val(); if(status!=='') url+='&filter_status='+encodeURIComponent(status);
