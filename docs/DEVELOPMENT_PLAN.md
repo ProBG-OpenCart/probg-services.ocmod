@@ -3,52 +3,51 @@
 ## Stage 1 — Architecture and foundation (`0.1.0-dev`)
 Status: Completed
 
-- Project and OCMOD structure
-- Installation and uninstall lifecycle
-- Administrator permissions
-- Bulgarian and English administration languages
-- Initial settings page and Features tab
-- Database schema for categories, services, galleries, relations, enquiries, files, and history
-- OpenCart 4 architecture and compatibility strategy
-- README, CHANGELOG, architecture, database, compatibility, and documentation-policy files
+Foundation, lifecycle, permissions, languages, settings, database schema, documentation and OpenCart 4 strategy.
 
 ## Stage 2 — Service categories (`0.2.0-dev`)
 Status: Completed
 
-- Full category CRUD
-- Multi-language title, subtitle, short description and HTML description
-- Parent categories
-- Images and icon field
-- Multi-store assignment
+Multilingual category CRUD, hierarchy, media, stores, SEO, filters, pagination and automatic metadata/SEO URL generation.
+
+## Stage 3 — Services administration (`0.3.0-dev`)
+Status: Completed
+
+- Full service CRUD and bulk deletion
+- Multilingual title, subtitle, short/full HTML descriptions
+- Multilingual price text and enquiry button text
 - Meta Title, Meta Description and Meta Keywords
-- SEO URLs through the standard OpenCart `seo_url` table
-- Automatic Meta Title when empty
-- Automatic SEO URL generation when empty
-- Bulgarian transliteration for generated SEO URLs
-- Collision-safe generated SEO URLs
-- Filters by title, parent and status
-- Pagination, permissions and validation
-- Bulgarian and English administration UI
-- ProBG Services administration submenu
-- README and CHANGELOG updates
+- Automatic Meta Title fallback
+- Category assignment
+- Main and social images
+- Gallery with image sort order
+- Price and Show price control
+- Per-service enquiry enable/disable switch
+- Multi-store assignment
+- Publication date, status and sort order
+- Related services with autocomplete
+- Filters and pagination
+- Standard OpenCart `seo_url` integration
+- Automatic `ID-transliterated-title` SEO URLs
+- Manual SEO URL uniqueness validation
+- BG/EN administration interface
 
-## Stage 3 — Services administration (`0.3.0`)
-Status: Next
-
-Service CRUD, categories, multi-language content, main and social images, gallery, pricing controls, enquiry enable/disable, related services, recommended products, stores, ordering, publishing status and SEO fields.
+Recommended-product links remain planned as an additive service merchandising feature and will be introduced with the public/service integration work without changing the Stage 3 database contract.
 
 ## Stage 4 — Public pages (`0.4.0`)
-Status: Planned
+Status: Next
+
+Public Services landing page, category pages and individual service pages; breadcrumbs, pagination, store/language filtering, images/gallery, prices, related services, publication/status rules and initial SEO URL routing.
 
 ## Stage 5 — Enquiry forms and persistent storage (`0.5.0`)
 Status: Planned
 
-All enquiries must be stored in the database even when email delivery fails.
+Per-service and general enquiry forms. Every enquiry is stored in the database before email delivery; failed email delivery must never lose the enquiry.
 
 ## Stage 6 — Enquiry workflow (`0.6.0`)
 Status: Planned
 
-Statuses, notes, assignment, history, email replies, and file management.
+Dedicated administration Enquiries section, statuses, notes, assignment, history, replies and file management.
 
 ## Stage 7 — SEO and structured data (`0.7.0`)
 Status: Planned
