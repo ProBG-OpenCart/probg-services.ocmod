@@ -4,56 +4,49 @@ A complete service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`0.2.0-dev` — Stage 2 service categories for OpenCart 3.
+`0.3.0-dev` — Stage 3 services administration for OpenCart 3.
 
 ## Planned editions
 
 - `probg-services-opencart-3.x.ocmod.zip`
 - `probg-services-opencart-4.x.zip`
 
-The two editions share the same functional specification and database concepts while using platform-specific integration layers.
+The editions share the same functional specification and database concepts while using platform-specific integration layers.
 
 ## Implemented
 
 ### Stage 1 — Foundation
-
-- OpenCart 3 MVC-L administration foundation;
-- install and uninstall lifecycle;
-- database tables for categories, services, galleries, relations, enquiries, files, and enquiry history;
-- administrator permissions;
-- Bulgarian and English administration language files;
-- module settings page and dedicated **Features** tab;
-- persistent data policy on uninstall;
-- OpenCart 4 compatibility strategy;
-- technical documentation under `docs/`.
+OpenCart 3 MVC-L foundation, install lifecycle, database schema, permissions, BG/EN languages, settings, Features tab, persistent-data uninstall policy, documentation, and OpenCart 4 compatibility strategy.
 
 ### Stage 2 — Service categories
+Full multilingual category CRUD, hierarchy, images/icons, multi-store, filters, pagination, SEO metadata, automatic Meta Title, automatic transliterated SEO URL, and standard `seo_url` integration.
 
-- category create, edit, list and bulk delete operations;
-- multi-language title, subtitle, short description, full HTML description and SEO metadata;
-- parent category selection;
-- image and icon fields;
+### Stage 3 — Services administration
+- service create, edit, list and bulk delete;
+- multilingual title, subtitle, short/full HTML descriptions;
+- multilingual price text and enquiry button text;
+- Meta Title, Description and Keywords;
+- automatic Meta Title fallback to service title;
+- category assignment;
+- main and social images;
+- image gallery with sort order;
+- price and independent Show price option;
+- independent enquiry-form enable/disable option per service;
+- publication date, status and sort order;
 - multi-store assignment;
-- status and sort order;
-- filters by title, parent category and status;
-- pagination;
-- SEO URLs stored in OpenCart's standard `seo_url` table;
-- automatic Meta Title from category title when Meta Title is empty;
-- automatic SEO URL generation when empty, including Bulgarian transliteration and collision-safe numeric suffixes;
-- SEO URL uniqueness validation for manually entered keywords;
-- OpenCart administration menu entry for service categories.
+- related services with autocomplete;
+- filters by title, category and status;
+- administration pagination;
+- standard OpenCart `seo_url` integration;
+- automatic SEO URL in `ID-transliterated-title` format when empty;
+- manual SEO URL uniqueness validation;
+- Services entry in the ProBG Services administration menu.
 
-## Installation during development
-
-1. Package `upload/` and `install.xml` as an OpenCart OCMOD archive.
-2. Install through **Extensions → Installer**.
-3. Refresh modifications.
-4. Install **ProBG Services** from **Extensions → Extensions → Modules**.
-5. Review user-group permissions if a non-administrator account will manage the module.
+The enquiry form itself and persistent enquiry workflow are intentionally implemented in Stage 5; Stage 3 stores the per-service switch and button text required by that stage.
 
 ## Documentation policy
 
-Every development stage must update `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_PLAN.md`, the administration **Features** tab, and any affected architecture, database, compatibility, installation, or usage documentation.
+Every stage updates `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_PLAN.md`, the administration **Features** tab, and affected technical documentation.
 
 ## Repository
 
