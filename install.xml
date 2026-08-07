@@ -2,7 +2,7 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>0.1.0-dev</version>
+  <version>0.2.0-dev</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
   <file path="admin/controller/common/column_left.php">
@@ -10,12 +10,28 @@
       <search><![CDATA[if ($this->user->hasPermission('access', 'catalog/information')) {]]></search>
       <add position="before"><![CDATA[
         if ($this->user->hasPermission('access', 'extension/module/probg_services')) {
+            $probg_services_children = array();
+
+            if ($this->user->hasPermission('access', 'extension/probg_services/category')) {
+                $probg_services_children[] = array(
+                    'name' => 'Categories',
+                    'href' => $this->url->link('extension/probg_services/category', 'user_token=' . $this->session->data['user_token'], true),
+                    'children' => array()
+                );
+            }
+
+            $probg_services_children[] = array(
+                'name' => 'Settings',
+                'href' => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true),
+                'children' => array()
+            );
+
             $data['menus'][] = array(
                 'id'       => 'menu-probg-services',
                 'icon'     => 'fa-briefcase',
                 'name'     => 'ProBG Services',
-                'href'     => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true),
-                'children' => array()
+                'href'     => '',
+                'children' => $probg_services_children
             );
         }
       ]]></add>
