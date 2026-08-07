@@ -34,7 +34,7 @@ class ControllerExtensionModuleProbgServices extends Controller {
             }
         }
 
-        $data['version'] = '0.1.0-dev';
+        $data['version'] = '0.2.0-dev';
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
