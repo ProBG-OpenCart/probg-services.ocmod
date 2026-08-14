@@ -38,7 +38,7 @@ class ControllerExtensionModuleProbgServices extends Controller {
             $data[$field]=$this->request->post[$field]??$this->config->get($field);
         }
 
-        $data['version']='0.3.1-dev';
+        $data['version']='0.3.2-dev';
         $data['stage']='3';
         $data['header']=$this->load->controller('common/header');
         $data['column_left']=$this->load->controller('common/column_left');
