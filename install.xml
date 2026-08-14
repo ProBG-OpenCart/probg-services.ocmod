@@ -2,23 +2,27 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>0.3.0-dev</version>
+  <version>0.3.1-dev</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
   <file path="admin/controller/common/column_left.php">
     <operation>
-      <search><![CDATA[if ($this->user->hasPermission('access', 'catalog/information')) {]]></search>
+      <search><![CDATA[// Design]]></search>
       <add position="before"><![CDATA[
+        // ProBG Services
+        $this->load->language('extension/module/probg_services');
+        $probg_services = array();
+        if ($this->user->hasPermission('access', 'extension/probg_services/service')) {
+            $probg_services[] = array('name' => $this->language->get('text_menu_services'), 'href' => $this->url->link('extension/probg_services/service', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
+        }
+        if ($this->user->hasPermission('access', 'extension/probg_services/category')) {
+            $probg_services[] = array('name' => $this->language->get('text_menu_categories'), 'href' => $this->url->link('extension/probg_services/category', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
+        }
         if ($this->user->hasPermission('access', 'extension/module/probg_services')) {
-            $probg_services_children = array();
-            if ($this->user->hasPermission('access', 'extension/probg_services/category')) {
-                $probg_services_children[] = array('name' => 'Categories', 'href' => $this->url->link('extension/probg_services/category', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
-            }
-            if ($this->user->hasPermission('access', 'extension/probg_services/service')) {
-                $probg_services_children[] = array('name' => 'Services', 'href' => $this->url->link('extension/probg_services/service', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
-            }
-            $probg_services_children[] = array('name' => 'Settings', 'href' => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
-            $data['menus'][] = array('id'=>'menu-probg-services','icon'=>'fa-briefcase','name'=>'ProBG Services','href'=>'','children'=>$probg_services_children);
+            $probg_services[] = array('name' => $this->language->get('text_menu_settings'), 'href' => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
+        }
+        if ($probg_services) {
+            $data['menus'][] = array('id' => 'menu-probg-services', 'icon' => 'fa-briefcase', 'name' => $this->language->get('text_menu_module'), 'href' => '', 'children' => $probg_services);
         }
       ]]></add>
     </operation>
