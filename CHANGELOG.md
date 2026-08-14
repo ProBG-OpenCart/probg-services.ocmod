@@ -2,6 +2,16 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [0.3.2-dev] - 2026-08-14
+
+### Added
+- Administration root menu now follows the ProBG Blog pattern exactly: localized root label, child entries built individually, per-route access checks, and insertion before the OpenCart Design section.
+- Bulgarian root menu label changed to **Услуги** and English root menu label to **Services**.
+
+### Changed
+- Services menu implementation normalized to the same compact OCMOD structure used by ProBG Blog.
+- Development version raised to `0.3.2-dev`.
+
 ## [0.3.1-dev] - 2026-08-14
 
 ### Added
