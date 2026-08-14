@@ -4,7 +4,7 @@ A complete service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`0.3.0-dev` — Stage 3 services administration for OpenCart 3.
+`0.3.1-dev` — Stage 3 services administration with ProBG Blog-style admin structure.
 
 ## Planned editions
 
@@ -26,23 +26,24 @@ Full multilingual category CRUD, hierarchy, images/icons, multi-store, filters, 
 - multilingual title, subtitle, short/full HTML descriptions;
 - multilingual price text and enquiry button text;
 - Meta Title, Description and Keywords;
-- automatic Meta Title fallback to service title;
-- category assignment;
-- main and social images;
-- image gallery with sort order;
-- price and independent Show price option;
-- independent enquiry-form enable/disable option per service;
-- publication date, status and sort order;
-- multi-store assignment;
+- category, main/social images and gallery;
+- price and Show price control;
+- per-service enquiry-form switch;
+- publication date, status, ordering and multi-store assignment;
 - related services with autocomplete;
-- filters by title, category and status;
-- administration pagination;
-- standard OpenCart `seo_url` integration;
-- automatic SEO URL in `ID-transliterated-title` format when empty;
-- manual SEO URL uniqueness validation;
-- Services entry in the ProBG Services administration menu.
+- filters and pagination;
+- automatic `ID-transliterated-title` SEO URLs and manual uniqueness validation.
 
-The enquiry form itself and persistent enquiry workflow are intentionally implemented in Stage 5; Stage 3 stores the per-service switch and button text required by that stage.
+### Administration structure
+The administration follows the same navigation model as **ProBG Blog**:
+
+- top-level **ProBG Services** menu with localized **Services**, **Categories**, and **Settings** entries;
+- persistent **Settings / Categories / Services** navigation tabs on the module settings, lists, and edit/create forms;
+- dashboard tiles for total categories and services;
+- stage/version information on the settings dashboard;
+- shared internal URLs and breadcrumbs instead of hardcoded menu links.
+
+The enquiry form itself and persistent enquiry workflow are implemented in Stage 5; Stage 3 stores the per-service switch and button text required by that stage.
 
 ## Documentation policy
 
