@@ -2,6 +2,22 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [0.3.1-dev] - 2026-08-14
+
+### Added
+- Unified administration navigation modeled after ProBG Blog: **Settings / Categories / Services**.
+- Shared top-level section tabs on settings, category list/form and service list/form pages.
+- Dashboard tiles showing total service categories and total services.
+- Direct dashboard links to category and service management.
+- Localized administration menu labels through the module language files.
+- Stage/version information block on the settings dashboard.
+
+### Changed
+- OCMOD administration menu now follows the same structure and insertion point as ProBG Blog.
+- Removed hardcoded English menu labels from `install.xml`.
+- Breadcrumbs and internal administration navigation now use the shared section URLs.
+- Administration version raised to `0.3.1-dev`.
+
 ## [0.3.0-dev] - 2026-08-07
 
 ### Added
@@ -18,10 +34,6 @@ All notable changes to ProBG Services are documented in this file.
 - Services administration menu entry.
 - Bulgarian and English service language files and Twig views.
 
-### Documentation
-- README and roadmap updated for Stage 3.
-- Features tab moved to Stage 3 status and Stage 4 next step.
-
 ## [0.2.0-dev] - 2026-08-07
 
 ### Added
@@ -29,7 +41,6 @@ All notable changes to ProBG Services are documented in this file.
 - Multi-language category content and SEO metadata.
 - Parent categories, image/icon, multi-store, status, sort order, filters and pagination.
 - Standard OpenCart `seo_url` integration, automatic Meta Title and transliterated collision-safe SEO URLs.
-- Service Categories administration menu entry.
 
 ## [0.1.0-dev] - 2026-08-06
 
