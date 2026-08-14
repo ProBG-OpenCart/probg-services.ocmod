@@ -2,7 +2,7 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>0.3.1-dev</version>
+  <version>0.3.2-dev</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
   <file path="admin/controller/common/column_left.php">
@@ -21,9 +21,7 @@
         if ($this->user->hasPermission('access', 'extension/module/probg_services')) {
             $probg_services[] = array('name' => $this->language->get('text_menu_settings'), 'href' => $this->url->link('extension/module/probg_services', 'user_token=' . $this->session->data['user_token'], true), 'children' => array());
         }
-        if ($probg_services) {
-            $data['menus'][] = array('id' => 'menu-probg-services', 'icon' => 'fa-briefcase', 'name' => $this->language->get('text_menu_module'), 'href' => '', 'children' => $probg_services);
-        }
+        if ($probg_services) $data['menus'][] = array('id' => 'menu-probg-services', 'icon' => 'fa-briefcase', 'name' => $this->language->get('text_menu_module'), 'href' => '', 'children' => $probg_services);
       ]]></add>
     </operation>
   </file>
