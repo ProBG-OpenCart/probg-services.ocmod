@@ -2,7 +2,7 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>0.3.2-dev</version>
+  <version>1.0.0-beta</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
   <file path="admin/controller/common/column_left.php">
