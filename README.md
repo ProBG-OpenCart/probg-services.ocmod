@@ -4,12 +4,12 @@ A complete service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`0.3.1-dev` — Stage 3 services administration with ProBG Blog-style admin structure.
+`1.0.0-beta` — current OpenCart 3 beta package. The development changelog preserves the earlier staged `0.3.x-dev` milestones.
 
-## Planned editions
+## Editions
 
-- `probg-services-opencart-3.x.ocmod.zip`
-- `probg-services-opencart-4.x.zip`
+- OpenCart 3: `probg-services-1.0.0-beta.ocmod.zip`
+- OpenCart 4: planned as a separate package
 
 The editions share the same functional specification and database concepts while using platform-specific integration layers.
 
@@ -52,3 +52,19 @@ Every stage updates `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_PLAN.md`, the
 ## Repository
 
 `ProBG-OpenCart/probg-services.ocmod`
+
+## Installation package
+
+The ready OpenCart 3 package is `probg-services-1.0.0-beta.ocmod.zip`. Upload it through **Extensions → Installer**, refresh **Extensions → Modifications**, then install the module from **Extensions → Extensions → Modules**.
+
+## Support development
+
+If this module is useful to you, you can support its development through Revolut:
+
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-0075EB?style=for-the-badge&logo=revolut&logoColor=white)](https://revolut.me/vtotev)
+
+## Подкрепете разработката
+
+Ако модулът ви е полезен, можете да подкрепите неговата разработка чрез Revolut:
+
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-0075EB?style=for-the-badge&logo=revolut&logoColor=white)](https://revolut.me/vtotev)
