@@ -22,33 +22,24 @@
   </file>
 
   <file path="catalog/controller/startup/seo_url.php">
-    <operation error="skip">
-      <search><![CDATA[if ($url[0] == 'manufacturer_id') {]]></search>
-      <add position="before"><![CDATA[
+    <operation error="skip"><search><![CDATA[if ($url[0] == 'manufacturer_id') {]]></search><add position="before"><![CDATA[
                     if ($url[0] == 'probg_service_category_id') { $this->request->get['probg_service_category_id'] = $url[1]; }
                     if ($url[0] == 'probg_service_id') { $this->request->get['probg_service_id'] = $url[1]; }
-      ]]></add>
-    </operation>
-    <operation error="skip">
-      <search><![CDATA[if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id') {]]></search>
-      <add position="replace"><![CDATA[if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id' && $url[0] != 'probg_service_category_id' && $url[0] != 'probg_service_id') {]]></add>
-    </operation>
-    <operation error="skip">
-      <search><![CDATA[if (isset($data['route'])) {]]></search>
-      <add position="after"><![CDATA[
+    ]]></add></operation>
+    <operation error="skip"><search><![CDATA[if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id') {]]></search><add position="replace"><![CDATA[if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id' && $url[0] != 'probg_service_category_id' && $url[0] != 'probg_service_id') {]]></add></operation>
+    <operation error="skip"><search><![CDATA[if (isset($data['route'])) {]]></search><add position="after"><![CDATA[
                 if ($data['route'] == 'extension/module/probg_services' && ($key == 'route' || $key == 'probg_service_category_id' || $key == 'probg_service_id')) {
                     $probg_services_query = ($key == 'route') ? $value : $key . '=' . (int)$value;
                     $probg_services_seo = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($probg_services_query) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
                     if ($probg_services_seo->num_rows && $probg_services_seo->row['keyword']) { $url .= '/' . $probg_services_seo->row['keyword']; unset($data[$key]); }
                 }
-      ]]></add>
-    </operation>
+    ]]></add></operation>
   </file>
 
+  <file path="catalog/controller/common/header.php"><operation error="skip"><search><![CDATA[$data['name'] = $this->config->get('config_name');]]></search><add position="after"><![CDATA[$data['probg_services_social_meta'] = $this->config->get('probg_services_social_meta');]]></add></operation></file>
+  <file path="catalog/view/theme/*/template/common/header.twig"><operation error="skip"><search><![CDATA[</head>]]></search><add position="before"><![CDATA[{% if probg_services_social_meta %}{{ probg_services_social_meta }}{% endif %}]]></add></operation></file>
+
   <file path="catalog/controller/extension/feed/google_sitemap.php">
-    <operation error="skip">
-      <search><![CDATA[$output .= '</urlset>';]]></search>
-      <add position="before"><![CDATA[$output .= $this->load->controller('extension/feed/probg_services_sitemap/googleSitemap');]]></add>
-    </operation>
+    <operation error="skip"><search><![CDATA[$output .= '</urlset>';]]></search><add position="before"><![CDATA[if ($this->config->get('module_probg_services_sitemap')) $output .= $this->load->controller('extension/feed/probg_services_sitemap/googleSitemap');]]></add></operation>
   </file>
 </modification>
