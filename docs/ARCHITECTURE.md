@@ -4,15 +4,15 @@
 
 ProBG Services follows the proven OpenCart 3 architecture used by **ProBG Blog**, while replacing publishing concepts with service-catalogue and enquiry-management concepts.
 
-The architectural mapping is:
-
 | ProBG Blog | ProBG Services |
 | --- | --- |
 | Blog home | Services landing page |
 | Blog category | Service category |
 | Article | Service |
 | Article gallery | Service gallery |
-| Related products | Related services; product recommendations remain optional |
+| Related products | Recommended products per service |
+| Category Layout Override | Service Category Layout Override |
+| Blog module instances | ProBG Services Block instances |
 | BlogPosting schema | Service + Offer schema |
 | Blog/CollectionPage schema | CollectionPage for service listings/categories |
 | Blog sitemap | Services sitemap |
@@ -24,43 +24,39 @@ The architectural mapping is:
 
 Routes are isolated under:
 
-- `extension/module/probg_services` — global settings/dashboard;
-- `extension/probg_services/category` — category CRUD;
-- `extension/probg_services/service` — service CRUD;
-- `extension/probg_services/enquiry` — enquiry workflow (next domain stage).
-
-The administration navigation mirrors ProBG Blog: localized root menu, per-route permission checks, shared Settings / Categories / Services navigation, and dashboard counters.
+- `extension/module/probg_services` — global settings/dashboard and schema upgrade entrypoint;
+- `extension/module/probg_services_block` — reusable OpenCart Layout block instances;
+- `extension/probg_services/category` — category CRUD and per-store Layout Override;
+- `extension/probg_services/service` — service CRUD, related services and recommended products;
+- `extension/probg_services/enquiry` — enquiry workflow.
 
 ### Catalogue data layer
 
-`catalog/model/extension/probg_services/service.php` is the read-only storefront domain model. It owns:
-
-- active category lookup;
-- active/published service lookup;
-- language filtering;
-- store filtering;
-- service counts;
-- gallery retrieval;
-- related service retrieval;
-- sitemap data;
-- store/language scoped cache keys.
-
-Catalogue queries do not expose disabled services or services with a future `date_available`.
+`catalog/model/extension/probg_services/service.php` owns active category/service lookup, language/store filtering, publication rules, gallery data, related services, recommended-product IDs, Category Layout Override resolution, sitemap data and store/language scoped cache keys.
 
 ### Catalogue controller layer
 
-`catalog/controller/extension/module/probg_services.php` uses the same dual-mode pattern as ProBG Blog:
+`catalog/controller/extension/module/probg_services.php` uses the same full-page/module dual-mode pattern as ProBG Blog. Category and service pages apply the selected category Layout Override by setting `config_layout_id` before OpenCart renders the layout columns.
 
-1. **Full-page mode** when the route represents the Services landing page, a category, or a service.
-2. **Layout module mode** when OpenCart renders the extension as a module instance.
+`catalog/controller/extension/module/probg_services_block.php` is a separate reusable block renderer. It supports three modes:
 
-This avoids separate public controllers for landing/category/service pages while keeping one canonical domain route.
+- latest services;
+- services from one category;
+- explicitly selected/featured services.
+
+Each block is stored as a normal OpenCart module instance and can therefore be assigned to standard Layout positions independently.
+
+## Merchandising boundary
+
+Recommended products use a dedicated many-to-many table rather than service JSON/settings. This keeps product references queryable and preserves explicit sort order. Product cards reuse the standard OpenCart product model for availability, pricing, tax, special price and rating semantics.
+
+## Layout override boundary
+
+Service category Layout Overrides use a dedicated `{DB_PREFIX}probg_service_category_to_layout` table keyed by `(category_id, store_id)`, matching the ProBG Blog approach. A service inherits the Layout Override of its owning category. A zero/missing override falls back to OpenCart's normal route layout resolution.
 
 ## Public URL contract
 
-Logical route:
-
-`extension/module/probg_services`
+Logical route: `extension/module/probg_services`
 
 Entity query keys:
 
@@ -81,61 +77,39 @@ A service requested through the wrong category path is redirected with HTTP 301 
 
 ## SEO presentation layer
 
-The architecture mirrors ProBG Blog but uses service semantics:
-
 - Meta Title / Description / Keywords;
 - canonical URLs;
 - Open Graph;
 - Twitter Cards;
-- JSON-LD `CollectionPage` for listings/categories;
-- JSON-LD `Service` for a service;
+- JSON-LD `CollectionPage`;
+- JSON-LD `Service`;
 - JSON-LD `Offer` when a visible price is available;
-- `Organization` as the service provider.
-
-The service `social_image` is preferred for social previews, with the main service image as fallback.
+- `Organization` as service provider.
 
 ## Sitemap architecture
 
-Dedicated endpoint:
+Dedicated endpoint: `index.php?route=extension/feed/probg_services_sitemap`
 
-`index.php?route=extension/feed/probg_services_sitemap`
-
-The sitemap contains:
-
-- Services landing page;
-- active service categories assigned to the current store/language;
-- active and published services assigned to the current store/language.
-
-When enabled, the same URL nodes are injected into OpenCart's standard Google Sitemap feed.
+The sitemap contains the Services landing page, active service categories assigned to the current store/language, and active/published services assigned to the current store/language. The same nodes can be injected into OpenCart's standard Google Sitemap feed.
 
 ## Cache architecture
 
-Catalogue cache keys follow the Blog strategy:
+Catalogue cache keys use:
 
 ```text
 probg_services.<store_id>.<language_id>.<resource>
 ```
 
-Cached resources include category lists, category pages, service lists, service pages, galleries and sitemap data. Enquiries are never cached.
+Enquiries are never cached.
 
 ## Enquiry persistence boundary
 
-The enquiry subsystem is intentionally separated from catalogue reads.
+A valid enquiry is committed before email notification is attempted. Delivery failure never discards the enquiry. Enquiry data, files and workflow history remain in dedicated tables.
 
-A valid enquiry must be committed to the database **before** email notification is attempted. Email delivery failure must never discard the enquiry. Delivery status is recorded separately.
+## Schema upgrade strategy
 
-The enquiry domain uses dedicated tables for enquiry data, files and history, allowing the later administration workflow to evolve without coupling it to the public catalogue model.
+From version `1.2.0`, the administration settings controller calls an idempotent `ensureSchema()` method. `CREATE TABLE IF NOT EXISTS` migrations allow existing installations to gain new additive tables without uninstalling the module or deleting business data.
 
 ## OpenCart 4 boundary
 
-OpenCart 3 and OpenCart 4 use separate install packages. Shared concepts remain stable:
-
-- database entities;
-- validation rules;
-- SEO URL domain semantics;
-- service/category/enquiry workflow;
-- cache resource semantics;
-- sitemap resource model;
-- language keys where practical.
-
-Platform-specific code remains isolated to controllers, namespaces, events, installer format, admin UI integration and Twig/theme integration.
+OpenCart 3 and OpenCart 4 use separate install packages. Shared domain concepts include database entities, validation rules, SEO semantics, service/category/enquiry workflow, merchandising relations, layout override semantics, cache resources and sitemap data. Platform-specific controllers, namespaces, events, installer structure and UI remain isolated.

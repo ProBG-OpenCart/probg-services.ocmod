@@ -28,34 +28,26 @@ Per-service form, privacy validation, attachments, honeypot/CAPTCHA, database-fi
 ## Stage 6 — Enquiry administration workflow
 Status: Completed in `1.1.0`
 
-- dedicated **Enquiries** administration section
-- filters by customer, email, service, status, assignee and date range
-- enquiry detail view
-- administrator assignment
-- internal notes
-- direct customer replies by email
-- durable status/history logging
-- `notify` marker distinguishing internal and customer-facing history
-- email failure does not discard workflow state
-- attachment metadata
-- bulk deletion
-
-Deferred to security/GDPR stage:
-- secure attachment download action
-- configurable upload policy
-- customer self-service enquiry history
-- configurable custom statuses
+Dedicated Enquiries administration, filters, assignee, statuses, internal notes, direct customer replies and durable history.
 
 ## Stage 7 — Service merchandising and layout integration
-Status: Next
+Status: Completed in `1.2.0`
 
-- Optional recommended products per service
-- Category Layout Override following the ProBG Blog layout pattern
-- Reusable service blocks/module instances for OpenCart Layouts
-- Featured/latest/category-filtered service blocks
+- Recommended OpenCart products per service
+- Explicit product sort order
+- Product cards on public service pages
+- Per-store Category Layout Override following the ProBG Blog model
+- Service pages inherit their category Layout Override
+- Reusable **ProBG Services Block** module instances
+- Latest services mode
+- Category-filtered services mode
+- Featured/selected services mode
+- Multilingual block heading
+- Configurable block limit and image dimensions
+- Idempotent schema upgrade for existing installations
 
 ## Stage 8 — Advanced SEO and navigation
-Status: Planned
+Status: Next
 
 - Breadcrumb structured data
 - richer service-provider configuration
