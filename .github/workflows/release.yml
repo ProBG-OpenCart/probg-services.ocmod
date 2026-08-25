@@ -1,0 +1,109 @@
+name: Build and Release ProBG Services
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probg-services-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Validate PHP and OCMOD XML
+        shell: bash
+        run: |
+          find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -r '$xml=simplexml_load_file("install.xml"); if ($xml===false) { exit(1); }'
+
+      - name: Read module version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(sed -n 's:.*<version>\([^<]*\)</version>.*:\1:p' install.xml | head -n1)
+          if [ -z "$VERSION" ]; then
+            echo "Unable to read version from install.xml" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "package=probg-services-$VERSION.ocmod.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Build OCMOD package
+        shell: bash
+        run: |
+          PACKAGE='${{ steps.version.outputs.package }}'
+          rm -f "dist/$PACKAGE"
+          mkdir -p dist
+          zip -r -9 "dist/$PACKAGE" install.xml upload -x '*.DS_Store' -x '*/.gitkeep'
+          find dist -maxdepth 1 -type f -name '*.ocmod.zip' -print0 | sort -z | xargs -0 sha256sum > dist/SHA256SUMS
+
+      - name: Commit release artifacts
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): build ${{ steps.version.outputs.version }} package"
+            git push origin HEAD:main
+          fi
+
+      - name: Extract release notes from CHANGELOG
+        shell: bash
+        run: |
+          VERSION='${{ steps.version.outputs.version }}'
+          awk -v version="$VERSION" '
+            index($0, "## [" version "]") == 1 {capture=1; next}
+            capture && /^## \[/ {exit}
+            capture {print}
+          ' CHANGELOG.md > /tmp/release-notes.md
+          if [ ! -s /tmp/release-notes.md ]; then
+            echo "No CHANGELOG section found for $VERSION" >&2
+            exit 1
+          fi
+
+      - name: Create version tag
+        shell: bash
+        run: |
+          TAG='${{ steps.version.outputs.tag }}'
+          git fetch origin main --tags
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+          else
+            git tag -a "$TAG" -m "ProBG Services ${{ steps.version.outputs.version }}"
+            git push origin "$TAG"
+          fi
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          TAG='${{ steps.version.outputs.tag }}'
+          PACKAGE='dist/${{ steps.version.outputs.package }}'
+          TITLE='ProBG Services ${{ steps.version.outputs.version }}'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "$TITLE" --notes-file /tmp/release-notes.md
+            gh release upload "$TAG" "$PACKAGE" --clobber
+          else
+            gh release create "$TAG" "$PACKAGE" --title "$TITLE" --notes-file /tmp/release-notes.md
+          fi

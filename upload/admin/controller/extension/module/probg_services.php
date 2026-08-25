@@ -8,10 +8,11 @@ class ControllerExtensionModuleProbgServices extends Controller {
         $this->load->model('setting/setting');
         $this->load->model('extension/probg_services/category');
         $this->load->model('extension/probg_services/service');
+        $this->load->model('extension/probg_services/enquiry');
 
         if($this->request->server['REQUEST_METHOD']=='POST'&&$this->validate()){
             $post=$this->request->post;
-            $post['module_probg_services_version']='1.1.0-dev';
+            $post['module_probg_services_version']='1.0.1';
             $this->model_setting_setting->editSetting('module_probg_services',$post);
             $this->session->data['success']=$this->language->get('text_success');
             $this->response->redirect($this->url->link('extension/module/probg_services','user_token='.$this->session->data['user_token'],true));
@@ -33,9 +34,11 @@ class ControllerExtensionModuleProbgServices extends Controller {
         $data['settings_url']=$data['action'];
         $data['categories_url']=$this->url->link('extension/probg_services/category',$token,true);
         $data['services_url']=$this->url->link('extension/probg_services/service',$token,true);
+        $data['enquiries_url']=$this->url->link('extension/probg_services/enquiry',$token,true);
         $data['cancel']=$this->url->link('marketplace/extension',$token.'&type=module',true);
         $data['total_categories']=$this->model_extension_probg_services_category->getTotalCategories();
         $data['total_services']=$this->model_extension_probg_services_service->getTotalServices();
+        $data['total_enquiries']=$this->model_extension_probg_services_enquiry->getTotalEnquiries();
 
         $defaults=array(
             'module_probg_services_status'=>0,
@@ -48,8 +51,8 @@ class ControllerExtensionModuleProbgServices extends Controller {
             else{$value=$this->config->get($field);$data[$field]=$value!==null?$value:$default;}
         }
 
-        $data['version']='1.1.0-dev';
-        $data['stage']='4';
+        $data['version']='1.0.1';
+        $data['stage']='5';
         $data['header']=$this->load->controller('common/header');
         $data['column_left']=$this->load->controller('common/column_left');
         $data['footer']=$this->load->controller('common/footer');
