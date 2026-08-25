@@ -1,70 +1,138 @@
 # ProBG Services for OpenCart
 
-A complete service catalogue and enquiry-management extension for OpenCart.
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-191C1F?logo=revolut&logoColor=white)](https://revolut.me/vtotev)
 
-## Current version
+A multilingual service catalogue and enquiry-management extension for OpenCart.
 
-`1.0.0-beta` — current OpenCart 3 beta package. The development changelog preserves the earlier staged `0.3.x-dev` milestones.
+## Current development version
+
+`1.1.0-dev` — storefront architecture aligned with ProBG Blog and adapted for services.
+
+The last packaged beta remains `probg-services-1.0.0-beta.ocmod.zip` in `dist/` until the next package is built.
 
 ## Editions
 
-- OpenCart 3: `probg-services-1.0.0-beta.ocmod.zip`
-- OpenCart 4: planned as a separate package
+- OpenCart 3: active development
+- OpenCart 4: planned as a separate platform-specific package using the same domain contract
 
-The editions share the same functional specification and database concepts while using platform-specific integration layers.
+## Architecture
+
+ProBG Services now follows the same core pattern proven in ProBG Blog:
+
+- one full-page/module controller for the public section;
+- one read-only storefront domain model;
+- standard OpenCart `seo_url` integration;
+- canonical hierarchical URLs and 301 correction;
+- multi-store and language-aware catalogue queries;
+- store/language scoped caching;
+- dedicated sitemap endpoint plus Google Sitemap integration;
+- Open Graph, Twitter Cards and JSON-LD;
+- Bootstrap-oriented Twig templates;
+- administration and catalogue concerns kept separate.
+
+The concepts are adapted to the purpose of this extension: Blog categories become service categories, articles become services, BlogPosting becomes Schema.org `Service`, and visible service pricing is represented as `Offer`.
 
 ## Implemented
 
-### Stage 1 — Foundation
-OpenCart 3 MVC-L foundation, install lifecycle, database schema, permissions, BG/EN languages, settings, Features tab, persistent-data uninstall policy, documentation, and OpenCart 4 compatibility strategy.
+### Administration
 
-### Stage 2 — Service categories
-Full multilingual category CRUD, hierarchy, images/icons, multi-store, filters, pagination, SEO metadata, automatic Meta Title, automatic transliterated SEO URL, and standard `seo_url` integration.
+- localized **Services** administration menu;
+- Settings / Categories / Services navigation;
+- dashboard counters;
+- category CRUD with hierarchy, media, multi-store and SEO;
+- service CRUD with gallery, pricing, social image, publication date and related services;
+- BG/EN administration languages;
+- per-route permissions.
 
-### Stage 3 — Services administration
-- service create, edit, list and bulk delete;
-- multilingual title, subtitle, short/full HTML descriptions;
-- multilingual price text and enquiry button text;
-- Meta Title, Description and Keywords;
-- category, main/social images and gallery;
-- price and Show price control;
-- per-service enquiry-form switch;
-- publication date, status, ordering and multi-store assignment;
-- related services with autocomplete;
-- filters and pagination;
-- automatic `ID-transliterated-title` SEO URLs and manual uniqueness validation.
+### Public Services section
 
-### Administration structure
-The administration follows the same navigation model as **ProBG Blog**:
+- Services landing page;
+- service-category pages;
+- individual service pages;
+- breadcrumbs and pagination;
+- main image and service gallery;
+- visible/hidden price handling;
+- related services;
+- publication-date and status rules;
+- multi-store and language filtering.
 
-- top-level **ProBG Services** menu with localized **Services**, **Categories**, and **Settings** entries;
-- persistent **Settings / Categories / Services** navigation tabs on the module settings, lists, and edit/create forms;
-- dashboard tiles for total categories and services;
-- stage/version information on the settings dashboard;
-- shared internal URLs and breadcrumbs instead of hardcoded menu links.
+### SEO
 
-The enquiry form itself and persistent enquiry workflow are implemented in Stage 5; Stage 3 stores the per-service switch and button text required by that stage.
+- standard OpenCart `seo_url` records;
+- automatic transliterated SEO URLs from administration;
+- logical route keys `probg_service_category_id` and `probg_service_id`;
+- hierarchical URL structure:
 
-## Documentation policy
+```text
+/services
+/services/category
+/services/category/service
+```
 
-Every stage updates `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_PLAN.md`, the administration **Features** tab, and affected technical documentation.
+- canonical URLs;
+- HTTP 301 correction when a service is requested under the wrong category;
+- Meta Title, Meta Description and Meta Keywords;
+- Open Graph and Twitter Cards;
+- `social_image` fallback to the service main image;
+- JSON-LD `CollectionPage` for listings/categories;
+- JSON-LD `Service` and `Offer` for service pages.
+
+### Sitemap and performance
+
+Dedicated sitemap endpoint:
+
+```text
+index.php?route=extension/feed/probg_services_sitemap
+```
+
+When enabled, service URLs are also appended to the standard OpenCart Google Sitemap. Sitemap entries are limited to active records assigned to the current store/language.
+
+Catalogue cache keys are scoped by store, language and resource:
+
+```text
+probg_services.<store_id>.<language_id>.<resource>
+```
+
+Enquiries are never cached.
+
+## Enquiry architecture
+
+The database foundation already separates:
+
+- enquiries;
+- enquiry files;
+- enquiry history.
+
+The next domain stage implements the public enquiry form and the dedicated administration section. The persistence rule is fixed: **the enquiry is written to the database before email notification is attempted**. Email failure must not lose a valid enquiry.
+
+## OpenCart 4
+
+OpenCart 4 will use a separate installable package. The database entities, service/category/enquiry domain semantics, SEO rules, sitemap resource model and validation rules remain aligned, while namespaces, routes, events, installer integration and UI code are platform-specific.
+
+See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
+
+## Installation during development
+
+1. Install the OCMOD archive through **Extensions → Installer**.
+2. Refresh **Extensions → Modifications**.
+3. Install **ProBG Services** from **Extensions → Extensions → Modules**.
+4. Open **Services → Settings** and enable the extension.
+5. Configure the services-per-page limit, sitemap and cache options.
+6. Create categories and services.
+7. Ensure standard OpenCart SEO URLs and `.htaccess` are enabled.
 
 ## Repository
 
 `ProBG-OpenCart/probg-services.ocmod`
 
-## Installation package
+---
 
-The ready OpenCart 3 package is `probg-services-1.0.0-beta.ocmod.zip`. Upload it through **Extensions → Installer**, refresh **Extensions → Modifications**, then install the module from **Extensions → Extensions → Modules**.
+## Български
 
-## Support development
+**ProBG Services** е многоезичен модул за каталог на услуги и управление на запитвания за OpenCart. Архитектурата на публичната част вече следва доказания модел на ProBG Blog, но е адаптирана за услуги: категории услуги, самостоятелни услуги, цени, галерии, свързани услуги, Schema.org `Service`/`Offer`, SEO URL, sitemap, кеширане и бъдещ workflow за запитвания.
 
-If this module is useful to you, you can support its development through Revolut:
+Всички запитвания ще се записват в базата данни преди опита за изпращане на email и ще се управляват в отделна административна секция.
 
-[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-0075EB?style=for-the-badge&logo=revolut&logoColor=white)](https://revolut.me/vtotev)
+### Подкрепете разработката
 
-## Подкрепете разработката
-
-Ако модулът ви е полезен, можете да подкрепите неговата разработка чрез Revolut:
-
-[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-0075EB?style=for-the-badge&logo=revolut&logoColor=white)](https://revolut.me/vtotev)
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-191C1F?logo=revolut&logoColor=white)](https://revolut.me/vtotev)
