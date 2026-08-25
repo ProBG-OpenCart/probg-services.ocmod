@@ -2,6 +2,76 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [1.2.0] - 2026-08-25
+
+### Български
+
+#### Добавено
+- Препоръчани OpenCart продукти към всяка услуга.
+- Autocomplete избор на продукти в администрацията на услугата.
+- Индивидуална подредба на препоръчаните продукти.
+- Публично показване на препоръчаните продукти с изображение, описание, цена, специална цена, данък и рейтинг според стандартната OpenCart продуктова логика.
+- Нова таблица `probg_service_product` за връзката услуга ↔ продукт.
+- Category Layout Override по магазин, реализиран по архитектурния модел на ProBG Blog.
+- Нова таблица `probg_service_category_to_layout`.
+- Избор на OpenCart Layout за всяка категория и всеки магазин от администрацията.
+- Наследяване на Layout Override от услугите в съответната категория.
+- Нов reusable модул **ProBG Services Block** за стандартните OpenCart Layout позиции.
+- Режим „Последни услуги“ за блока.
+- Режим „Услуги от категория“ за блока.
+- Режим „Избрани услуги“ за блока.
+- Многоезично заглавие на всеки block instance.
+- Настройки за лимит и размери на изображенията за всеки block instance.
+- Автоматично безопасно schema upgrade поведение чрез `ensureSchema()` за съществуващи инсталации.
+- Автоматично добавяне на права за новия `extension/module/probg_services_block` route.
+
+#### Променено
+- Версията на модула е увеличена до `1.2.0` като backward-compatible feature release.
+- Етапът на разработка е преместен на Етап 7.
+- Публичният catalog model вече поддържа explicit service ID selection и latest sort за reusable блоковете.
+- Category и Service страниците прилагат category-specific `config_layout_id` преди зареждане на OpenCart layout колоните.
+- README, архитектурната документация, database документацията и development plan са обновени за новия merchandising/layout слой.
+
+#### Архитектурни решения
+- Препоръчаните продукти се пазят в отделна many-to-many таблица, а не като сериализирана настройка в услугата.
+- Layout Override се пази по `(category_id, store_id)`, което запазва multi-store семантиката на OpenCart и следва модела на ProBG Blog.
+- Липсващ/нулев Layout Override оставя стандартната OpenCart route layout резолюция непроменена.
+- Новите таблици се създават idempotent при отваряне на **Услуги → Настройки**, така че upgrade от `1.1.0` не изисква деинсталиране и не губи данни.
+
+### English
+
+#### Added
+- Recommended OpenCart products for each service.
+- Product autocomplete in service administration.
+- Explicit sort order for recommended products.
+- Public recommended-product cards with image, description, price, special price, tax and rating using standard OpenCart product semantics.
+- New `probg_service_product` service-to-product relation table.
+- Per-store Category Layout Override following the ProBG Blog architecture.
+- New `probg_service_category_to_layout` table.
+- OpenCart Layout selection for each service category and store.
+- Service pages inherit the Layout Override of their owning category.
+- New reusable **ProBG Services Block** module for standard OpenCart Layout positions.
+- Latest services block mode.
+- Category-filtered services block mode.
+- Featured/selected services block mode.
+- Multilingual heading per block instance.
+- Per-instance limit and image-dimension settings.
+- Idempotent `ensureSchema()` upgrade behavior for existing installations.
+- Automatic permissions for the new `extension/module/probg_services_block` route.
+
+#### Changed
+- Module version increased to `1.2.0` as a backward-compatible feature release.
+- Development stage advanced to Stage 7.
+- Storefront catalogue model now supports explicit service-ID selection and latest sorting for reusable blocks.
+- Category and Service pages apply category-specific `config_layout_id` before OpenCart layout columns are rendered.
+- README, architecture documentation, database documentation and development plan updated for the merchandising/layout layer.
+
+#### Architecture decisions
+- Recommended products use a dedicated many-to-many table instead of serialized service settings.
+- Layout Override is keyed by `(category_id, store_id)`, preserving OpenCart multi-store semantics and matching the ProBG Blog pattern.
+- Missing/zero Layout Override leaves standard OpenCart route layout resolution unchanged.
+- New tables are created idempotently when **Services → Settings** is opened, allowing upgrade from `1.1.0` without uninstalling or deleting data.
+
 ## [1.1.0] - 2026-08-25
 
 ### Български
@@ -56,156 +126,66 @@ All notable changes to ProBG Services are documented in this file.
 - Самостоятелни страници на услуги с основно изображение, галерия, цена и свързани услуги.
 - Отделен read-only catalog model за категории, услуги, галерии, свързани услуги и sitemap данни.
 - Catalog кеширане по магазин и език.
-- Правила за скриване на изключени услуги и услуги с бъдеща дата на публикуване.
 - Йерархични SEO route ключове `probg_service_category_id` и `probg_service_id`.
 - Canonical URL и HTTP 301 корекция при заявена услуга през грешна категория.
-- Open Graph и Twitter Card метаданни за страниците на услугите.
-- JSON-LD `CollectionPage` за списъци и категории.
-- JSON-LD `Service`, `Offer` и `Organization` за страниците на услуги.
-- Самостоятелен `extension/feed/probg_services_sitemap` endpoint.
-- Интеграция със стандартния OpenCart Google Sitemap.
-- Sitemap филтриране по магазин и език.
-- Български и английски storefront езикови файлове.
-- Bootstrap-ориентирани Twig шаблони за списък, категория, услуга, module block и 404.
-- Настройки за брой услуги на страница, sitemap и кеширане.
-- Публична форма за запитване към всяка услуга, за която запитванията са включени.
-- Полета за име, имейл, телефон, фирма, уебсайт, тема, бюджет, желан срок и съобщение.
-- Проверка за съгласие с поверителност, honeypot anti-spam и стандартна OpenCart CAPTCHA интеграция.
-- До пет файла към запитване с лимит 5 MB на файл и ограничен списък с разширения.
-- Database-first записване: валидното запитване се записва преди опита за изпращане на email.
-- Отделно поле `email_sent`, така че SMTP грешка да не загуби запитването.
-- История за създаването на запитването и резултата от email известяването.
-- Свързване на запитването с клиент, услуга, магазин, IP адрес и user agent.
-- Отделна административна секция **Запитвания**.
-- Филтри по клиент, имейл, ID на услуга, статус и период.
-- Детайлен изглед със заявените данни, файловете и пълната история.
-- Статуси: Ново, Прегледано, Изисква информация, Изпратена оферта, В процес, Прието, Отказано, Приключено и Спам.
-- Вътрешни бележки и история на промените на статуса.
-- Dashboard брояч за запитванията.
-- Локализиран пункт **Запитвания** в административното меню.
-- Български и английски езикови файлове за публичната форма и администрацията.
+- Open Graph и Twitter Card метаданни.
+- JSON-LD `CollectionPage`, `Service`, `Offer` и `Organization`.
+- Самостоятелен Services sitemap endpoint и интеграция със стандартния OpenCart Google Sitemap.
+- Публична форма за запитване към всяка услуга.
+- Database-first записване на запитванията, файлове, CAPTCHA/honeypot защита и отделна административна секция **Запитвания**.
 
 #### Променено
 - Публичната архитектура е уеднаквена с доказания модел на ProBG Blog, но със service-domain семантика.
-- OCMOD разширява стандартния OpenCart SEO URL decoder/rewriter за категории услуги и услуги.
-- OCMOD добавя социалните метаданни на Services в общия theme header по модела на ProBG Blog.
-- Административната навигация вече е **Настройки / Категории / Услуги / Запитвания**.
-- Версията на модула и OCMOD metadata е `1.0.1`.
-- Индикаторът за разработка е преместен на Етап 5.
+- Административната навигация включва **Настройки / Категории / Услуги / Запитвания**.
 
 #### Сигурност
-- Файловете от запитванията се записват в `DIR_STORAGE/upload/` със случайно генерирани имена вместо оригиналното клиентско име.
-- Изпълними и script разширения не се приемат от uploader-а.
-- Формата проверява задължителните данни, съгласието за поверителност, honeypot полето и OpenCart CAPTCHA, когато е включена.
-
-#### Архитектурни решения
-- Страниците на услуги използват Schema.org `Service`/`Offer` вместо blog-specific schema типове.
-- Публичният catalog read layer остава отделен от enquiry write layer-а.
-- Запитванията се записват независимо от успешното изпращане на email.
-- Файловете и историята на запитванията използват отделни таблици.
-- OpenCart 4 остава отделен integration layer със същия domain contract.
+- Файловете от запитванията се записват в `DIR_STORAGE/upload/` със случайно генерирани имена.
+- Изпълними/script разширения не се приемат.
 
 ### English
 
 #### Added
-- Public Services landing page following the ProBG Blog full-page controller pattern.
-- Public service-category pages with pagination and multilingual content.
-- Individual service pages with main image, gallery, price display and related services.
-- Dedicated read-only catalog model for categories, services, galleries, related services and sitemap data.
-- Store/language scoped catalog cache keys.
-- Publication rules for disabled and future-dated services.
-- Hierarchical SEO route keys `probg_service_category_id` and `probg_service_id`.
-- Canonical URLs and HTTP 301 correction when a service is requested under the wrong category.
-- Open Graph and Twitter Card output for Services pages.
-- JSON-LD `CollectionPage` for listing/category pages.
-- JSON-LD `Service`, `Offer` and `Organization` provider data for service pages.
-- Dedicated `extension/feed/probg_services_sitemap` endpoint.
-- Integration with the standard OpenCart Google Sitemap.
-- Store/language-aware sitemap filtering.
-- Bulgarian and English storefront language files.
-- Bootstrap-oriented Twig templates for listing, category, service, module and not-found output.
-- Services-per-page, sitemap and cache settings in administration.
-- Public enquiry form on every service where enquiries are enabled.
-- Enquiry fields for name, email, telephone, company, website, subject, budget, desired deadline and message.
-- Privacy consent validation, honeypot anti-spam field and standard OpenCart CAPTCHA integration.
-- Up to five enquiry attachments with a 5 MB per-file limit and restricted extension list.
-- Database-first enquiry persistence: valid enquiries are stored before email notification is attempted.
-- Separate `email_sent` state so SMTP failure cannot discard an enquiry.
-- Enquiry history entries for creation and notification outcome.
-- Customer, service, store, IP and user-agent association for enquiries.
-- Dedicated **Enquiries** administration section.
-- Enquiry list with filters by customer, email, service ID, status and date range.
-- Enquiry detail page with submitted data, attachment metadata and complete history.
-- Enquiry workflow statuses: New, Viewed, Needs information, Quote sent, In progress, Accepted, Rejected, Completed and Spam.
-- Internal notes and status history updates from administration.
-- Enquiry counter tile on the ProBG Services administration dashboard.
-- Localized **Enquiries** entry in the ProBG Services administration menu.
-- Bulgarian and English enquiry storefront/admin language files.
+- Public Services landing, category and individual service pages following the ProBG Blog architecture.
+- Store/language-aware catalogue model and cache.
+- Hierarchical SEO URLs, canonical URLs and 301 correction.
+- Open Graph, Twitter Cards and JSON-LD `CollectionPage`, `Service`, `Offer` and `Organization`.
+- Dedicated Services sitemap and standard Google Sitemap integration.
+- Public per-service enquiry forms with database-first persistence, attachments, CAPTCHA/honeypot protection and dedicated Enquiries administration.
 
 #### Changed
-- Core storefront architecture aligned with the proven ProBG Blog architecture while preserving service-domain semantics.
-- OCMOD extends the standard OpenCart SEO URL decoder/rewriter for service categories and services.
-- OCMOD injects Services social metadata into the common theme header using the same integration strategy as ProBG Blog.
-- Administration navigation now includes **Settings / Categories / Services / Enquiries**.
-- Module metadata, administration version and OCMOD version set to `1.0.1`.
-- Stage indicator advanced to Stage 5.
+- Storefront architecture aligned with ProBG Blog while preserving service-domain semantics.
+- Administration navigation includes **Settings / Categories / Services / Enquiries**.
 
 #### Security
-- Enquiry uploads are stored in `DIR_STORAGE/upload/` using random generated filenames instead of the original client filename.
-- Executable/script extensions are not accepted by the enquiry uploader.
-- Enquiry form validation includes required identity/contact/message fields, privacy consent, honeypot protection and optional OpenCart CAPTCHA.
-
-#### Architecture decisions
-- Service pages use Schema.org `Service`/`Offer` rather than blog-specific schemas.
-- Public service catalogue reads remain separated from the enquiry write model.
-- Enquiry persistence is database-first and independent of email delivery status.
-- Enquiry files and history use dedicated tables to keep workflow extensible.
-- OpenCart 4 remains a separate integration layer sharing the same domain contract.
+- Enquiry files use random storage filenames under `DIR_STORAGE/upload/`.
+- Executable/script extensions are rejected.
 
 ## [0.3.2-dev] - 2026-08-14
 
 ### Added
-- Administration root menu follows the ProBG Blog pattern: localized root label, individually permissioned child entries, and insertion before Design.
-- Bulgarian root menu label changed to **Услуги** and English root menu label to **Services**.
-
-### Changed
-- Services menu implementation normalized to the same compact OCMOD structure used by ProBG Blog.
+- Administration root menu follows the ProBG Blog pattern with localized labels and per-route permissions.
 
 ## [0.3.1-dev] - 2026-08-14
 
 ### Added
-- Unified administration navigation modeled after ProBG Blog: **Settings / Categories / Services**.
-- Shared top-level section tabs on settings, category list/form and service list/form pages.
-- Dashboard tiles showing total service categories and services.
-- Localized administration menu labels and shared internal routes.
+- Unified Settings / Categories / Services administration navigation and dashboard counters.
 
 ## [0.3.0-dev] - 2026-08-07
 
 ### Added
-- Full services administration CRUD and bulk delete.
-- Multilingual title, subtitle, descriptions, price text, enquiry button text and SEO metadata.
-- Category, main image, social image, price, Show price, enquiry toggle, publication date, sort order and status.
-- Multi-store service assignment.
-- Service gallery and related services.
-- Filters, pagination and automatic service SEO URLs.
+- Full services administration CRUD, multilingual content, gallery, pricing, stores, related services and SEO URL management.
 
 ## [0.2.0-dev] - 2026-08-07
 
 ### Added
-- Full OpenCart 3 administration CRUD for service categories.
-- Multi-language category content and SEO metadata.
-- Parent categories, image/icon, multi-store, status, sort order, filters and pagination.
-- Standard OpenCart `seo_url` integration and automatic transliterated SEO URLs.
+- Full service-category administration with hierarchy, stores, metadata and SEO URLs.
 
 ## [0.1.0-dev] - 2026-08-06
 
 ### Added
-- Initial OpenCart 3 extension structure and install lifecycle.
-- Database foundation for categories, services, galleries, relations, enquiries, files and history.
-- Administrator permissions, BG/EN languages, settings and Features tab.
-- README and technical documentation plus OpenCart 4 porting strategy.
+- Initial OpenCart 3 extension structure, database foundation, permissions, languages, settings and documentation.
 
 ### Design decisions
-- Uninstall preserves business and enquiry data by default.
-- OpenCart 3 and OpenCart 4 are distributed as separate packages.
+- Uninstall preserves business data.
+- OpenCart 3 and OpenCart 4 use separate packages.
 - Enquiries are stored independently of email delivery status.
