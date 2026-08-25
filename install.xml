@@ -2,14 +2,10 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>1.2.0</version>
+  <version>1.3.0</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
-
-  <file path="admin/controller/common/column_left.php">
-    <operation>
-      <search><![CDATA[// Design]]></search>
-      <add position="before"><![CDATA[
+  <file path="admin/controller/common/column_left.php"><operation><search><![CDATA[// Design]]></search><add position="before"><![CDATA[
         // ProBG Services
         $this->load->language('extension/module/probg_services');
         $probg_services = array();
@@ -18,10 +14,7 @@
         if ($this->user->hasPermission('access', 'extension/probg_services/enquiry')) $probg_services[] = array('name'=>$this->language->get('text_menu_enquiries'),'href'=>$this->url->link('extension/probg_services/enquiry','user_token='.$this->session->data['user_token'],true),'children'=>array());
         if ($this->user->hasPermission('access', 'extension/module/probg_services')) $probg_services[] = array('name'=>$this->language->get('text_menu_settings'),'href'=>$this->url->link('extension/module/probg_services','user_token='.$this->session->data['user_token'],true),'children'=>array());
         if ($probg_services) $data['menus'][] = array('id'=>'menu-probg-services','icon'=>'fa-briefcase','name'=>$this->language->get('text_menu_module'),'href'=>'','children'=>$probg_services);
-      ]]></add>
-    </operation>
-  </file>
-
+      ]]></add></operation></file>
   <file path="catalog/controller/startup/seo_url.php">
     <operation error="skip"><search><![CDATA[if ($url[0] == 'manufacturer_id') {]]></search><add position="before"><![CDATA[
                     if ($url[0] == 'probg_service_category_id') { $this->request->get['probg_service_category_id'] = $url[1]; }
@@ -36,11 +29,7 @@
                 }
     ]]></add></operation>
   </file>
-
   <file path="catalog/controller/common/header.php"><operation error="skip"><search><![CDATA[$data['name'] = $this->config->get('config_name');]]></search><add position="after"><![CDATA[$data['probg_services_social_meta'] = $this->config->get('probg_services_social_meta');]]></add></operation></file>
   <file path="catalog/view/theme/*/template/common/header.twig"><operation error="skip"><search><![CDATA[</head>]]></search><add position="before"><![CDATA[{% if probg_services_social_meta %}{{ probg_services_social_meta }}{% endif %}]]></add></operation></file>
-
-  <file path="catalog/controller/extension/feed/google_sitemap.php">
-    <operation error="skip"><search><![CDATA[$output .= '</urlset>';]]></search><add position="before"><![CDATA[if ($this->config->get('module_probg_services_sitemap')) $output .= $this->load->controller('extension/feed/probg_services_sitemap/googleSitemap');]]></add></operation>
-  </file>
+  <file path="catalog/controller/extension/feed/google_sitemap.php"><operation error="skip"><search><![CDATA[$output .= '</urlset>';]]></search><add position="before"><![CDATA[if ($this->config->get('module_probg_services_sitemap')) $output .= $this->load->controller('extension/feed/probg_services_sitemap/googleSitemap');]]></add></operation></file>
 </modification>
