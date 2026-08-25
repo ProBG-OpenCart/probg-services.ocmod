@@ -6,11 +6,11 @@ A multilingual service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`1.2.0`
+`1.3.0`
 
 Installation package:
 
-`dist/probg-services-1.2.0.ocmod.zip`
+`dist/probg-services-1.3.0.ocmod.zip`
 
 ## Editions
 
@@ -31,69 +31,69 @@ ProBG Services follows the same core architecture proven in ProBG Blog, adapted 
 - gallery, pricing, SEO and related services;
 - recommended products per service with explicit sort order;
 - per-store Category Layout Override;
+- multilingual Services landing-page SEO content;
+- configurable service-provider Organization name, URL and logo;
+- configurable sitemap change frequency and priorities;
 - enquiry list, detail, statuses, assignee, internal notes and customer replies;
-- BG/EN administration languages;
-- per-route permissions;
-- idempotent schema upgrade for new release tables.
+- BG/EN administration languages and per-route permissions.
 
 ### Public Services section
 
-- Services landing page;
-- service-category pages;
-- individual service pages;
-- breadcrumbs and pagination;
-- galleries, pricing and related services;
-- recommended OpenCart products on service pages;
-- category Layout Override also inherited by service pages in that category;
-- multi-store/language filtering;
-- per-service enquiry forms.
+- Services landing page with multilingual title, description and metadata;
+- service-category pages and individual service pages;
+- breadcrumbs and JSON-LD `BreadcrumbList`;
+- galleries, pricing, related services and recommended products;
+- category Layout Override inherited by services;
+- Open Graph, Twitter Cards and JSON-LD `CollectionPage`, `Service`, `Offer`, `Organization`;
+- configurable provider data with store fallbacks;
+- multi-store/language filtering and per-service enquiry forms.
 
 ### Reusable OpenCart Layout blocks
 
-A separate **ProBG Services Block** module can be instantiated multiple times from **Extensions → Extensions → Modules** and assigned through standard OpenCart Layouts.
+**ProBG Services Block** can be instantiated multiple times and assigned through standard OpenCart Layouts.
 
 Modes:
 
 - Latest services;
 - Services from a selected category;
-- Featured/selected services.
+- Featured/selected services;
+- Services menu.
 
-Each instance supports multilingual heading, limit, image dimensions and status. Featured services preserve the administrator-defined selection order.
+Menu instances can independently show the Services home link, service categories and individual services. Content blocks support multilingual headings, limits and image dimensions.
 
 ### Enquiries
 
-A valid enquiry is persisted to the database before email delivery is attempted. Attachments are stored under `DIR_STORAGE/upload/` using generated filenames. The administration workflow supports assignment to an active OpenCart administrator, internal notes, status changes and optional customer-facing replies. If reply email delivery fails, the workflow state remains stored.
-
-Statuses: New, Viewed, Needs information, Quote sent, In progress, Accepted, Rejected, Completed and Spam.
+A valid enquiry is persisted to the database before email delivery is attempted. Attachments are stored under `DIR_STORAGE/upload/` using generated filenames. The administration workflow supports assignment, internal notes, status changes and optional customer-facing replies. Email failure never discards stored workflow state.
 
 ### SEO and sitemap
 
 - standard OpenCart `seo_url` records;
 - hierarchical `/services/category/service` URLs;
 - canonical URLs and 301 correction;
+- multilingual SEO for the Services landing page;
 - Open Graph and Twitter Cards;
-- JSON-LD `CollectionPage`, `Service`, `Offer` and `Organization`;
-- dedicated Services sitemap endpoint;
-- standard Google Sitemap integration;
+- JSON-LD `CollectionPage`, `Service`, `Offer`, `Organization` and `BreadcrumbList`;
+- dedicated Services sitemap endpoint and standard Google Sitemap integration;
+- configurable sitemap `changefreq` and separate priorities for section/category/service;
 - store/language scoped catalogue cache.
 
-## Upgrade notes for 1.2.0
+## Upgrade notes
 
-Opening **Services → Settings** after updating runs an idempotent schema check and creates the new `probg_service_product` and `probg_service_category_to_layout` tables when missing. Existing service, category and enquiry data is preserved.
+Opening **Services → Settings** runs the idempotent schema check introduced in 1.2.0. Existing service, category and enquiry data is preserved.
 
 ## OpenCart 4
 
-OpenCart 4 will use a separate installable package while preserving the same service/category/enquiry/layout/merchandising domain contract. See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
+OpenCart 4 will use a separate installable package while preserving the same service/category/enquiry/layout/merchandising/SEO domain contract. See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
 
 ## Installation
 
-1. Download `probg-services-1.2.0.ocmod.zip` from GitHub Releases or `dist/`.
+1. Download `probg-services-1.3.0.ocmod.zip` from GitHub Releases or `dist/`.
 2. Upload it through **Extensions → Installer**.
 3. Refresh **Extensions → Modifications**.
 4. Install **ProBG Services** from **Extensions → Extensions → Modules**.
-5. Open **Services → Settings** and enable the extension.
-6. Create categories and services and configure sitemap/cache settings.
-7. Optionally create one or more **ProBG Services Block** instances and assign them to OpenCart Layout positions.
+5. Open **Services → Settings** and configure status, SEO, provider, sitemap and cache settings.
+6. Create categories and services.
+7. Optionally create **ProBG Services Block** instances for service cards or navigation menus.
 
 ---
 
@@ -101,19 +101,16 @@ OpenCart 4 will use a separate installable package while preserving the same ser
 
 ## Описание
 
-**ProBG Services** е многоезичен модул за OpenCart за управление и представяне на услуги, категории услуги и клиентски запитвания. Архитектурата следва модела на ProBG Blog, адаптиран към услуги.
+**ProBG Services** е многоезичен модул за OpenCart за управление и представяне на услуги, категории услуги, препоръчани продукти и клиентски запитвания. Архитектурата следва модела на ProBG Blog, адаптиран към услуги.
 
-## Ново във версия 1.2.0
+## Ново във версия 1.3.0
 
-- препоръчани продукти към всяка услуга;
-- задаване на подредба на препоръчаните продукти;
-- показване на продуктите на публичната страница на услугата;
-- Layout Override за всяка категория и магазин;
-- услугите наследяват Layout-а на категорията;
-- нов reusable модул **ProBG Services Block**;
-- блокове за Последни услуги, Услуги от категория и Избрани услуги;
-- многоезично заглавие, лимит и размери на изображенията за всеки блок;
-- автоматично безопасно създаване на новите таблици при обновяване от предишна версия.
+- многоезично SEO съдържание за основната страница „Услуги“;
+- настройки за име, URL и лого на доставчика на услугите;
+- JSON-LD `BreadcrumbList`;
+- configurable sitemap `changefreq` и priority стойности;
+- режим **Меню Услуги** в `ProBG Services Block`;
+- отделен контрол дали менюто да показва началната страница, категориите и услугите.
 
 ## Запитвания
 
