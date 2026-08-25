@@ -4,20 +4,22 @@
 
 A multilingual service catalogue and enquiry-management extension for OpenCart.
 
-## Current development version
+## Current version
 
-`1.1.0-dev` — storefront architecture aligned with ProBG Blog and adapted for services.
+`1.0.1`
 
-The last packaged beta remains `probg-services-1.0.0-beta.ocmod.zip` in `dist/` until the next package is built.
+Installation package:
+
+`dist/probg-services-1.0.1.ocmod.zip`
 
 ## Editions
 
-- OpenCart 3: active development
+- OpenCart 3: active/stable development line
 - OpenCart 4: planned as a separate platform-specific package using the same domain contract
 
 ## Architecture
 
-ProBG Services now follows the same core pattern proven in ProBG Blog:
+ProBG Services follows the same core architecture proven in ProBG Blog, adapted to the service catalogue domain:
 
 - one full-page/module controller for the public section;
 - one read-only storefront domain model;
@@ -28,19 +30,25 @@ ProBG Services now follows the same core pattern proven in ProBG Blog:
 - dedicated sitemap endpoint plus Google Sitemap integration;
 - Open Graph, Twitter Cards and JSON-LD;
 - Bootstrap-oriented Twig templates;
-- administration and catalogue concerns kept separate.
+- administration and catalogue concerns kept separate;
+- enquiry writes handled by a dedicated persistence model.
 
-The concepts are adapted to the purpose of this extension: Blog categories become service categories, articles become services, BlogPosting becomes Schema.org `Service`, and visible service pricing is represented as `Offer`.
+Blog categories map to service categories, articles map to services, and `BlogPosting` is replaced by Schema.org `Service` with `Offer` when a price is visible.
 
 ## Implemented
 
 ### Administration
 
 - localized **Services** administration menu;
-- Settings / Categories / Services navigation;
-- dashboard counters;
+- Settings / Categories / Services / Enquiries navigation;
+- dashboard counters for categories, services and enquiries;
 - category CRUD with hierarchy, media, multi-store and SEO;
 - service CRUD with gallery, pricing, social image, publication date and related services;
+- dedicated enquiry list with filters;
+- enquiry detail page;
+- enquiry statuses and internal notes;
+- complete enquiry history;
+- attachment metadata;
 - BG/EN administration languages;
 - per-route permissions.
 
@@ -55,6 +63,60 @@ The concepts are adapted to the purpose of this extension: Blog categories becom
 - related services;
 - publication-date and status rules;
 - multi-store and language filtering.
+
+### Enquiries
+
+Each service can independently enable or disable its enquiry form.
+
+The public form supports:
+
+- name;
+- email;
+- telephone;
+- company;
+- website;
+- subject;
+- budget;
+- desired deadline;
+- message;
+- privacy consent;
+- up to five attachments;
+- standard OpenCart CAPTCHA when configured;
+- honeypot anti-spam protection.
+
+The persistence rule is strict: **a valid enquiry is written to the database before email notification is attempted**. SMTP/email failure therefore never discards the enquiry. Email delivery state is stored separately in `email_sent`, and every creation/delivery event is recorded in enquiry history.
+
+Files are stored under `DIR_STORAGE/upload/` using generated random filenames. The original client filename is stored only as metadata.
+
+### Enquiry administration workflow
+
+The dedicated **Services → Enquiries** section provides:
+
+- filters by customer name;
+- email filter;
+- service ID filter;
+- status filter;
+- date range filter;
+- enquiry detail view;
+- customer/contact data;
+- service/store/customer association;
+- IP and user-agent information;
+- attachment metadata;
+- email delivery state;
+- internal notes;
+- status history.
+
+Statuses:
+
+- New;
+- Viewed;
+- Needs information;
+- Quote sent;
+- In progress;
+- Accepted;
+- Rejected;
+- Completed;
+- Spam.
 
 ### SEO
 
@@ -95,31 +157,22 @@ probg_services.<store_id>.<language_id>.<resource>
 
 Enquiries are never cached.
 
-## Enquiry architecture
-
-The database foundation already separates:
-
-- enquiries;
-- enquiry files;
-- enquiry history.
-
-The next domain stage implements the public enquiry form and the dedicated administration section. The persistence rule is fixed: **the enquiry is written to the database before email notification is attempted**. Email failure must not lose a valid enquiry.
-
 ## OpenCart 4
 
-OpenCart 4 will use a separate installable package. The database entities, service/category/enquiry domain semantics, SEO rules, sitemap resource model and validation rules remain aligned, while namespaces, routes, events, installer integration and UI code are platform-specific.
+OpenCart 4 will use a separate installable package. Database entities, service/category/enquiry domain semantics, SEO rules, sitemap resource model and validation rules remain aligned, while namespaces, routes, events, installer integration and UI code remain platform-specific.
 
 See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
 
-## Installation during development
+## Installation
 
-1. Install the OCMOD archive through **Extensions → Installer**.
-2. Refresh **Extensions → Modifications**.
-3. Install **ProBG Services** from **Extensions → Extensions → Modules**.
-4. Open **Services → Settings** and enable the extension.
-5. Configure the services-per-page limit, sitemap and cache options.
-6. Create categories and services.
-7. Ensure standard OpenCart SEO URLs and `.htaccess` are enabled.
+1. Download `probg-services-1.0.1.ocmod.zip` from GitHub Releases or `dist/`.
+2. Upload it through **Extensions → Installer**.
+3. Refresh **Extensions → Modifications**.
+4. Install **ProBG Services** from **Extensions → Extensions → Modules**.
+5. Open **Services → Settings** and enable the extension.
+6. Configure services-per-page, sitemap and cache options.
+7. Create categories and services.
+8. Ensure standard OpenCart SEO URLs and `.htaccess` are enabled.
 
 ## Repository
 
@@ -127,12 +180,20 @@ See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
 
 ---
 
-## Български
+# Български
 
-**ProBG Services** е многоезичен модул за каталог на услуги и управление на запитвания за OpenCart. Архитектурата на публичната част вече следва доказания модел на ProBG Blog, но е адаптирана за услуги: категории услуги, самостоятелни услуги, цени, галерии, свързани услуги, Schema.org `Service`/`Offer`, SEO URL, sitemap, кеширане и бъдещ workflow за запитвания.
+## Описание
 
-Всички запитвания ще се записват в базата данни преди опита за изпращане на email и ще се управляват в отделна административна секция.
+**ProBG Services** е многоезичен модул за OpenCart за управление и представяне на услуги, категории услуги и клиентски запитвания. Публичната архитектура следва доказания модел на ProBG Blog, но е адаптирана към услуги — цени, галерии, свързани услуги, Schema.org `Service`/`Offer`, SEO URL, sitemap и отделен workflow за запитвания.
 
-### Подкрепете разработката
+## Запитвания
+
+Към всяка услуга може да бъде включена собствена форма за запитване. Валидното запитване се записва **първо в базата данни**, а след това се прави опит за изпращане на email. При SMTP грешка записът остава наличен в администрацията.
+
+В **Услуги → Запитвания** има отделна секция със списък, филтри, статуси, детайлни данни, файлове, вътрешни бележки и история на обработката.
+
+Версия `1.0.1` добавя публичните страници по архитектурата на ProBG Blog и пълната основа на системата за запитвания.
+
+## Подкрепете разработката
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Revolut-191C1F?logo=revolut&logoColor=white)](https://revolut.me/vtotev)
