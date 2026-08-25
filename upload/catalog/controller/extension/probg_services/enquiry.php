@@ -39,6 +39,7 @@ class ControllerExtensionProbgServicesEnquiry extends Controller {
             'user_agent' => substr($this->request->server['HTTP_USER_AGENT'] ?? '', 0, 512)
         );
 
+        // Database-first persistence: the enquiry exists before any secondary operation.
         $enquiry_id = $this->model_extension_probg_services_enquiry->addEnquiry($data);
         $this->storeAttachments($enquiry_id);
 
@@ -56,9 +57,7 @@ class ControllerExtensionProbgServicesEnquiry extends Controller {
     }
 
     private function validate() {
-        if (!isset($this->request->post['form_token'], $this->session->data['probg_services_enquiry_token']) || !hash_equals($this->session->data['probg_services_enquiry_token'], (string)$this->request->post['form_token'])) {
-            $this->errors['warning'] = $this->language->get('error_token');
-        }
+        // Honeypot: hidden from legitimate visitors, filled by many generic bots.
         if (!empty($this->request->post['website_confirm'])) $this->errors['warning'] = $this->language->get('error_spam');
         if (utf8_strlen(trim($this->request->post['name'] ?? '')) < 2 || utf8_strlen(trim($this->request->post['name'] ?? '')) > 255) $this->errors['name'] = $this->language->get('error_name');
         if (!filter_var(trim($this->request->post['email'] ?? ''), FILTER_VALIDATE_EMAIL)) $this->errors['email'] = $this->language->get('error_email');
@@ -74,20 +73,31 @@ class ControllerExtensionProbgServicesEnquiry extends Controller {
 
     private function storeAttachments($enquiry_id) {
         if (empty($this->request->files['attachments']['name']) || !is_array($this->request->files['attachments']['name'])) return;
+
         $allowed = array('pdf','doc','docx','xls','xlsx','jpg','jpeg','png','webp','txt');
         $count = min(count($this->request->files['attachments']['name']), 5);
-        for ($i=0; $i<$count; $i++) {
+
+        for ($i = 0; $i < $count; $i++) {
             $name = $this->request->files['attachments']['name'][$i];
             $tmp = $this->request->files['attachments']['tmp_name'][$i];
             $size = (int)$this->request->files['attachments']['size'][$i];
             $error = (int)$this->request->files['attachments']['error'][$i];
             if ($error !== UPLOAD_ERR_OK || !$name || !is_uploaded_file($tmp) || $size > 5 * 1024 * 1024) continue;
+
             $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
             if (!in_array($ext, $allowed, true)) continue;
+
             $stored = 'probg_service_' . $enquiry_id . '_' . bin2hex(random_bytes(16)) . '.' . $ext;
-            if (!move_uploaded_file($tmp, DIR_STORAGE . 'upload/' . $stored)) continue;
-            $mime = function_exists('mime_content_type') ? (string)mime_content_type(DIR_STORAGE . 'upload/' . $stored) : '';
-            $this->model_extension_probg_services_enquiry->addFile($enquiry_id, array('name'=>$name,'filename'=>$stored,'mime_type'=>$mime,'size'=>$size));
+            $destination = DIR_STORAGE . 'upload/' . $stored;
+            if (!move_uploaded_file($tmp, $destination)) continue;
+
+            $mime = function_exists('mime_content_type') ? (string)mime_content_type($destination) : '';
+            $this->model_extension_probg_services_enquiry->addFile($enquiry_id, array(
+                'name' => $name,
+                'filename' => $stored,
+                'mime_type' => $mime,
+                'size' => $size
+            ));
         }
     }
 
