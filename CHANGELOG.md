@@ -4,7 +4,66 @@ All notable changes to ProBG Services are documented in this file.
 
 ## [1.0.1] - 2026-08-25
 
-### Added
+### Български
+
+#### Добавено
+- Публична начална страница „Услуги“ по full-page controller модела на ProBG Blog.
+- Публични страници на категории услуги с пагинация и многоезично съдържание.
+- Самостоятелни страници на услуги с основно изображение, галерия, цена и свързани услуги.
+- Отделен read-only catalog model за категории, услуги, галерии, свързани услуги и sitemap данни.
+- Catalog кеширане по магазин и език.
+- Правила за скриване на изключени услуги и услуги с бъдеща дата на публикуване.
+- Йерархични SEO route ключове `probg_service_category_id` и `probg_service_id`.
+- Canonical URL и HTTP 301 корекция при заявена услуга през грешна категория.
+- Open Graph и Twitter Card метаданни за страниците на услугите.
+- JSON-LD `CollectionPage` за списъци и категории.
+- JSON-LD `Service`, `Offer` и `Organization` за страниците на услуги.
+- Самостоятелен `extension/feed/probg_services_sitemap` endpoint.
+- Интеграция със стандартния OpenCart Google Sitemap.
+- Sitemap филтриране по магазин и език.
+- Български и английски storefront езикови файлове.
+- Bootstrap-ориентирани Twig шаблони за списък, категория, услуга, module block и 404.
+- Настройки за брой услуги на страница, sitemap и кеширане.
+- Публична форма за запитване към всяка услуга, за която запитванията са включени.
+- Полета за име, имейл, телефон, фирма, уебсайт, тема, бюджет, желан срок и съобщение.
+- Проверка за съгласие с поверителност, honeypot anti-spam и стандартна OpenCart CAPTCHA интеграция.
+- До пет файла към запитване с лимит 5 MB на файл и ограничен списък с разширения.
+- Database-first записване: валидното запитване се записва преди опита за изпращане на email.
+- Отделно поле `email_sent`, така че SMTP грешка да не загуби запитването.
+- История за създаването на запитването и резултата от email известяването.
+- Свързване на запитването с клиент, услуга, магазин, IP адрес и user agent.
+- Отделна административна секция **Запитвания**.
+- Филтри по клиент, имейл, ID на услуга, статус и период.
+- Детайлен изглед със заявените данни, файловете и пълната история.
+- Статуси: Ново, Прегледано, Изисква информация, Изпратена оферта, В процес, Прието, Отказано, Приключено и Спам.
+- Вътрешни бележки и история на промените на статуса.
+- Dashboard брояч за запитванията.
+- Локализиран пункт **Запитвания** в административното меню.
+- Български и английски езикови файлове за публичната форма и администрацията.
+
+#### Променено
+- Публичната архитектура е уеднаквена с доказания модел на ProBG Blog, но със service-domain семантика.
+- OCMOD разширява стандартния OpenCart SEO URL decoder/rewriter за категории услуги и услуги.
+- OCMOD добавя социалните метаданни на Services в общия theme header по модела на ProBG Blog.
+- Административната навигация вече е **Настройки / Категории / Услуги / Запитвания**.
+- Версията на модула и OCMOD metadata е `1.0.1`.
+- Индикаторът за разработка е преместен на Етап 5.
+
+#### Сигурност
+- Файловете от запитванията се записват в `DIR_STORAGE/upload/` със случайно генерирани имена вместо оригиналното клиентско име.
+- Изпълними и script разширения не се приемат от uploader-а.
+- Формата проверява задължителните данни, съгласието за поверителност, honeypot полето и OpenCart CAPTCHA, когато е включена.
+
+#### Архитектурни решения
+- Страниците на услуги използват Schema.org `Service`/`Offer` вместо blog-specific schema типове.
+- Публичният catalog read layer остава отделен от enquiry write layer-а.
+- Запитванията се записват независимо от успешното изпращане на email.
+- Файловете и историята на запитванията използват отделни таблици.
+- OpenCart 4 остава отделен integration layer със същия domain contract.
+
+### English
+
+#### Added
 - Public Services landing page following the ProBG Blog full-page controller pattern.
 - Public service-category pages with pagination and multilingual content.
 - Individual service pages with main image, gallery, price display and related services.
@@ -39,7 +98,7 @@ All notable changes to ProBG Services are documented in this file.
 - Localized **Enquiries** entry in the ProBG Services administration menu.
 - Bulgarian and English enquiry storefront/admin language files.
 
-### Changed
+#### Changed
 - Core storefront architecture aligned with the proven ProBG Blog architecture while preserving service-domain semantics.
 - OCMOD extends the standard OpenCart SEO URL decoder/rewriter for service categories and services.
 - OCMOD injects Services social metadata into the common theme header using the same integration strategy as ProBG Blog.
@@ -47,12 +106,12 @@ All notable changes to ProBG Services are documented in this file.
 - Module metadata, administration version and OCMOD version set to `1.0.1`.
 - Stage indicator advanced to Stage 5.
 
-### Security
+#### Security
 - Enquiry uploads are stored in `DIR_STORAGE/upload/` using random generated filenames instead of the original client filename.
 - Executable/script extensions are not accepted by the enquiry uploader.
 - Enquiry form validation includes required identity/contact/message fields, privacy consent, honeypot protection and optional OpenCart CAPTCHA.
 
-### Architecture decisions
+#### Architecture decisions
 - Service pages use Schema.org `Service`/`Offer` rather than blog-specific schemas.
 - Public service catalogue reads remain separated from the enquiry write model.
 - Enquiry persistence is database-first and independent of email delivery status.
