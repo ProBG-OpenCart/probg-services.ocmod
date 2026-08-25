@@ -44,5 +44,12 @@ class ModelExtensionProbgServicesService extends Model {
 
     public function getServiceImages($service_id){$key=$this->key('images.'.(int)$service_id);$cached=$this->getCache($key);if($cached!==false)return $cached;$rows=$this->db->query("SELECT * FROM `".DB_PREFIX."probg_service_image` WHERE service_id='".(int)$service_id."' ORDER BY sort_order ASC,service_image_id ASC")->rows;$this->setCache($key,$rows);return $rows;}
     public function getRelatedServices($service_id){$ids=array();foreach($this->db->query("SELECT related_id FROM `".DB_PREFIX."probg_service_related` WHERE service_id='".(int)$service_id."' ORDER BY related_id ASC")->rows as $row)$ids[]=(int)$row['related_id'];return $ids;}
-    public function getSitemapData(){return array('categories'=>$this->db->query("SELECT category_id,date_modified FROM `".DB_PREFIX."probg_service_category` WHERE status='1'")->rows,'services'=>$this->db->query("SELECT service_id,category_id,date_modified FROM `".DB_PREFIX."probg_service` WHERE status='1' AND (date_available IS NULL OR date_available<=CURDATE())")->rows);}
+
+    public function getSitemapData(){
+        $key=$this->key('sitemap');$cached=$this->getCache($key);if($cached!==false)return $cached;
+        $language_id=(int)$this->config->get('config_language_id');$store_id=(int)$this->config->get('config_store_id');
+        $categories=$this->db->query("SELECT c.category_id,c.date_modified FROM `".DB_PREFIX."probg_service_category` c INNER JOIN `".DB_PREFIX."probg_service_category_description` cd ON(cd.category_id=c.category_id AND cd.language_id='".$language_id."') INNER JOIN `".DB_PREFIX."probg_service_category_to_store` c2s ON(c2s.category_id=c.category_id AND c2s.store_id='".$store_id."') WHERE c.status='1'")->rows;
+        $services=$this->db->query("SELECT s.service_id,s.category_id,s.date_modified FROM `".DB_PREFIX."probg_service` s INNER JOIN `".DB_PREFIX."probg_service_description` sd ON(sd.service_id=s.service_id AND sd.language_id='".$language_id."') INNER JOIN `".DB_PREFIX."probg_service_to_store` s2s ON(s2s.service_id=s.service_id AND s2s.store_id='".$store_id."') LEFT JOIN `".DB_PREFIX."probg_service_category` c ON(c.category_id=s.category_id) LEFT JOIN `".DB_PREFIX."probg_service_category_to_store` c2s ON(c2s.category_id=s.category_id AND c2s.store_id='".$store_id."') WHERE s.status='1' AND (s.date_available IS NULL OR s.date_available<=CURDATE()) AND (s.category_id='0' OR (c.status='1' AND c2s.store_id IS NOT NULL))")->rows;
+        $result=array('categories'=>$categories,'services'=>$services);$this->setCache($key,$result);return $result;
+    }
 }
