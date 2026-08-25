@@ -23,36 +23,38 @@ No stage is considered complete until its documentation is current.
 
 Every development PR for ProBG Services must finish with a complete release cycle after the changes are validated:
 
-1. Work is made on a feature/fix branch and committed with appropriate `feat:`, `fix:`, `docs:`, `refactor:` or other Conventional Commit-style messages.
+1. Work is made on a feature/fix branch and committed with appropriate Conventional Commit-style messages.
 2. The PR must contain all code and documentation for the version, including the complete `CHANGELOG.md` entry.
 3. The version number must be updated consistently in all module metadata and user-visible version locations.
 4. An installable OpenCart OCMOD package must be generated in `dist/` for that exact version.
 5. `dist/SHA256SUMS` must be updated for the generated package.
 6. The PR is merged automatically once the intended change set and required checks are complete.
-7. A Git tag is created from the merged commit using the exact module version prefixed with `v`, for example `v1.0.1`.
+7. A Git tag is created from the merged commit using `v<version>`.
 8. A GitHub Release is created for that tag/version.
-9. The release notes must contain **all changes included in that version** and must remain consistent with `CHANGELOG.md`.
-10. The matching `dist/*.ocmod.zip` installation package must be attached to or otherwise made available through the release where tooling permits.
+9. Release notes must contain **all changes included in that version in both Bulgarian and English** and remain consistent with `CHANGELOG.md`.
+10. The matching `dist/*.ocmod.zip` package must be attached to the release.
+
+## Bilingual release notes
+
+Every released version section in `CHANGELOG.md` must contain these top-level language sections:
+
+- `### Български`
+- `### English`
+
+Both sections must describe the same complete change set. Use translated subsections as applicable: `Добавено / Added`, `Променено / Changed`, `Поправено / Fixed`, `Сигурност / Security`, `Архитектурни решения / Architecture decisions`.
+
+The release workflow must fail if either language section is missing. GitHub Release notes are generated directly from the matching bilingual `CHANGELOG.md` version section.
 
 ## Versioning
 
 The project follows semantic versioning:
 
-- patch: `1.0.0` → `1.0.1` for fixes and small compatible corrections;
-- minor: `1.0.x` → `1.1.0` for backward-compatible features;
-- major: `1.x.x` → `2.0.0` for incompatible changes.
+- patch for fixes and small compatible corrections;
+- minor for backward-compatible features;
+- major for incompatible changes.
 
-Tag format is always `v<version>` (for example `v1.0.1`). The module metadata, package filename, changelog heading and GitHub Release version must refer to the same version.
+Tag format is always `v<version>`. Module metadata, package filename, changelog heading and GitHub Release version must refer to the same version.
 
 ## Release completeness rule
 
-A PR is not considered fully delivered until all of the following are complete:
-
-- PR merged;
-- version bumped;
-- complete `CHANGELOG.md` entry;
-- installable versioned `.ocmod.zip` present in `dist/`;
-- `SHA256SUMS` updated;
-- `v<version>` tag created;
-- GitHub Release created;
-- release notes contain the complete change set for the version.
+A PR is not considered fully delivered until PR merge, version bump, bilingual complete `CHANGELOG.md`, versioned `.ocmod.zip`, updated checksum, `v<version>` tag and bilingual GitHub Release are complete.
