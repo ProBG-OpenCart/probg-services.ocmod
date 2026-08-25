@@ -67,7 +67,7 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Extract release notes from CHANGELOG
+      - name: Extract bilingual release notes from CHANGELOG
         shell: bash
         run: |
           VERSION='${{ steps.version.outputs.version }}'
@@ -80,6 +80,8 @@ jobs:
             echo "No CHANGELOG section found for $VERSION" >&2
             exit 1
           fi
+          grep -q '^### Български$' /tmp/release-notes.md || { echo "Missing Bulgarian release notes" >&2; exit 1; }
+          grep -q '^### English$' /tmp/release-notes.md || { echo "Missing English release notes" >&2; exit 1; }
 
       - name: Create version tag
         shell: bash
