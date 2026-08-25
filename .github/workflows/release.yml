@@ -38,26 +38,21 @@ jobs:
       - name: Build OCMOD package
         shell: bash
         run: |
-          VERSION='${{ steps.version.outputs.version }}'
           PACKAGE='${{ steps.version.outputs.package }}'
           rm -f "dist/$PACKAGE"
           mkdir -p dist
           zip -r -9 "dist/$PACKAGE" install.xml upload -x '*.DS_Store' -x '*/.gitkeep'
-          sha256sum "dist/$PACKAGE" > dist/SHA256SUMS
+          find dist -maxdepth 1 -type f -name '*.ocmod.zip' -print0 | sort -z | xargs -0 sha256sum > dist/SHA256SUMS
 
       - name: Commit release artifacts
-        id: artifacts
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add dist/
-          if git diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
+          if ! git diff --cached --quiet; then
             git commit -m "chore(release): build ${{ steps.version.outputs.version }} package"
             git push origin HEAD:main
-            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Extract release notes from CHANGELOG
@@ -65,18 +60,14 @@ jobs:
         run: |
           VERSION='${{ steps.version.outputs.version }}'
           awk -v version="$VERSION" '
-            $0 == "## [" version "] - 2026-08-25" {capture=1; next}
+            index($0, "## [" version "]") == 1 {capture=1; next}
             capture && /^## \[/ {exit}
             capture {print}
           ' CHANGELOG.md > /tmp/release-notes.md
           if [ ! -s /tmp/release-notes.md ]; then
-            awk -v version="$VERSION" '
-              index($0, "## [" version "]") == 1 {capture=1; next}
-              capture && /^## \[/ {exit}
-              capture {print}
-            ' CHANGELOG.md > /tmp/release-notes.md
+            echo "No CHANGELOG section found for $VERSION" >&2
+            exit 1
           fi
-          test -s /tmp/release-notes.md
 
       - name: Create version tag
         shell: bash
