@@ -1,18 +1,10 @@
 <?php
 class ModelExtensionModuleProbgServices extends Model {
-    public function install() {
-        foreach ($this->getSchema() as $sql) {
-            $this->db->query($sql);
-        }
-    }
-
-    public function uninstall() {
-        // Module data is preserved by design. A future explicit purge action will remove the tables.
-    }
-
-    private function getSchema() {
-        $prefix = DB_PREFIX;
-
+    public function install(){ $this->ensureSchema(); }
+    public function ensureSchema(){ foreach($this->getSchema() as $sql)$this->db->query($sql); }
+    public function uninstall(){ /* Data is preserved by design. */ }
+    private function getSchema(){
+        $prefix=DB_PREFIX;
         return array(
             "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category` (`category_id` INT(11) NOT NULL AUTO_INCREMENT, `parent_id` INT(11) NOT NULL DEFAULT 0, `image` VARCHAR(255) NOT NULL DEFAULT '', `icon` VARCHAR(255) NOT NULL DEFAULT '', `sort_order` INT(11) NOT NULL DEFAULT 0, `status` TINYINT(1) NOT NULL DEFAULT 1, `date_added` DATETIME NOT NULL, `date_modified` DATETIME NOT NULL, PRIMARY KEY (`category_id`), KEY `parent_id` (`parent_id`), KEY `status_sort` (`status`,`sort_order`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci",
             "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category_description` (`category_id` INT(11) NOT NULL, `language_id` INT(11) NOT NULL, `name` VARCHAR(255) NOT NULL, `subtitle` VARCHAR(255) NOT NULL DEFAULT '', `description_short` TEXT NOT NULL, `description` MEDIUMTEXT NOT NULL, `meta_title` VARCHAR(255) NOT NULL DEFAULT '', `meta_description` VARCHAR(255) NOT NULL DEFAULT '', `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '', PRIMARY KEY (`category_id`,`language_id`), KEY `name` (`name`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci",
