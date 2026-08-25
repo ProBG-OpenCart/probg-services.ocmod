@@ -18,73 +18,36 @@ Service CRUD, multilingual content, gallery, pricing, social image, related serv
 ## Stage 4 — Blog-aligned public catalogue architecture
 Status: Completed in `1.0.1`
 
-- Services landing page
-- Service category pages
-- Individual service pages
-- Full-page/module dual controller pattern
-- Read-only storefront domain model
-- Multi-store and language-aware queries
-- Publication-date/status rules
-- Breadcrumbs and pagination
-- Gallery and related services
-- Visible/hidden pricing
-- Canonical URL handling
-- Hierarchical SEO URL decode/rewrite through standard OpenCart `seo_url`
-- HTTP 301 correction for wrong category/service hierarchy
-- Open Graph and Twitter Cards
-- JSON-LD `CollectionPage`, `Service`, `Offer`, `Organization`
-- Dedicated Services sitemap endpoint
-- Standard Google Sitemap integration
-- Store/language scoped catalogue cache
-- BG/EN storefront language and Twig templates
+Services landing/category/service pages, full-page/module architecture, read-only storefront model, multi-store/language queries, SEO routing, canonical/301 handling, social metadata, structured data, sitemap and cache.
 
 ## Stage 5 — Enquiry forms and persistent storage
 Status: Completed in `1.0.1`
 
-- Per-service enquiry form
-- Name, email, telephone, company, website, subject, message, budget and desired deadline
-- Privacy consent
-- Up to five file attachments with extension and size validation
-- Honeypot anti-spam protection
-- Standard OpenCart CAPTCHA integration when configured
-- Database-first persistence before email delivery
-- Independent `email_sent` state
-- Customer/store/service association
-- IP and user-agent capture
-- Creation/email outcome history
-- Success/error storefront UX with submitted values preserved on validation errors
-
-Deferred from Stage 5:
-- optional general Services enquiry form not tied to a specific service
-- configurable file limits/extension list in administration
-- configurable recipient by service/category
+Per-service form, privacy validation, attachments, honeypot/CAPTCHA, database-first persistence, independent email state and enquiry history.
 
 ## Stage 6 — Enquiry administration workflow
-Status: In progress in `1.0.1`
+Status: Completed in `1.1.0`
 
-Implemented:
 - dedicated **Enquiries** administration section
-- enquiry counter on module dashboard
-- filters by name, email, service ID, status and date range
+- filters by customer, email, service, status, assignee and date range
 - enquiry detail view
-- submitted customer/service/store metadata
-- attachment metadata
-- email delivery state
-- statuses
+- administrator assignment
 - internal notes
-- status/history log
+- direct customer replies by email
+- durable status/history logging
+- `notify` marker distinguishing internal and customer-facing history
+- email failure does not discard workflow state
+- attachment metadata
 - bulk deletion
 
-Remaining:
-- administrator assignment workflow
+Deferred to security/GDPR stage:
 - secure attachment download action
-- reply workflow from administration
-- email/reply history
-- customer notification on selected status changes
-- configurable status definitions if required
+- configurable upload policy
+- customer self-service enquiry history
+- configurable custom statuses
 
 ## Stage 7 — Service merchandising and layout integration
-Status: Planned
+Status: Next
 
 - Optional recommended products per service
 - Category Layout Override following the ProBG Blog layout pattern
@@ -108,6 +71,7 @@ Status: Planned
 - rate limiting
 - stronger MIME/content validation for attachments
 - configurable upload policy
+- secure attachment download
 - database indexes/performance testing
 - GDPR export/delete workflow
 

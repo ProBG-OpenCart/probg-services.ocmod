@@ -2,6 +2,50 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [1.1.0] - 2026-08-25
+
+### Български
+
+#### Добавено
+- Назначаване на всяко запитване към конкретен активен администратор на OpenCart.
+- Филтър по назначен администратор, включително неназначени запитвания.
+- Показване на назначения администратор в списъка и детайлния изглед.
+- Възможност бележката да остане само вътрешна или да бъде изпратена като отговор до клиента.
+- Имейл отговор до клиента директно от детайлния изглед на запитването.
+- `notify` маркер в историята за разграничаване на вътрешни бележки и изпратени клиентски отговори.
+- Отделни съобщения при успешно изпратен отговор и при запазен запис с неуспешно изпращане на email.
+- Български текстове за новия workflow и email шаблона за отговор.
+
+#### Променено
+- Етапът на разработка е преместен на Етап 6.
+- Версията на модула е увеличена до `1.1.0` като backward-compatible feature release.
+- Историята на запитването вече показва администратор и дали записът е изпратен до клиента.
+
+#### Архитектурни решения
+- Използват се вече съществуващите `assigned_user_id` и `notify` полета, без breaking промяна на database schema.
+- Клиентският отговор първо се записва в workflow историята; при email грешка обработката на запитването остава запазена.
+
+### English
+
+#### Added
+- Assignment of each enquiry to a specific active OpenCart administrator.
+- Assignee filter including unassigned enquiries.
+- Assigned administrator shown in list and detail views.
+- Notes can remain internal or be sent as a customer reply.
+- Direct customer email replies from the enquiry detail page.
+- `notify` history flag distinguishes internal notes from customer-facing replies.
+- Separate success messaging for delivered replies and saved updates where email delivery failed.
+- English workflow labels and customer reply email template.
+
+#### Changed
+- Development stage advanced to Stage 6.
+- Module version increased to `1.1.0` as a backward-compatible feature release.
+- Enquiry history now shows the administrator and whether each entry was sent to the customer.
+
+#### Architecture decisions
+- Existing `assigned_user_id` and `notify` fields are reused, avoiding a breaking database-schema migration.
+- Customer reply workflow remains durable when email delivery fails; enquiry processing state is still preserved.
+
 ## [1.0.1] - 2026-08-25
 
 ### Български
