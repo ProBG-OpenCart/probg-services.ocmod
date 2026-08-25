@@ -68,6 +68,7 @@ class ControllerExtensionModuleProbgServices extends Controller {
         $this->social($service['name'],$service['meta_description'],$canonical,'Service',$this->image($share,1200,630),$service);
 
         $data=$this->layoutData();
+        $data['service_id']=$id;
         $data['heading_title']=$service['name'];
         $data['subtitle']=$service['subtitle'];
         $data['short_description']=html_entity_decode($service['description_short'],ENT_QUOTES,'UTF-8');
