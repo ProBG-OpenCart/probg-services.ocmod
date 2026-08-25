@@ -22,6 +22,18 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
+      - name: Validate PHP and OCMOD XML
+        shell: bash
+        run: |
+          find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -r '$xml=simplexml_load_file("install.xml"); if ($xml===false) { exit(1); }'
+
       - name: Read module version
         id: version
         shell: bash
