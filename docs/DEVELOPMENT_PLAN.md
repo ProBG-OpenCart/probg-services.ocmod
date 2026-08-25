@@ -33,30 +33,22 @@ Dedicated Enquiries administration, filters, assignee, statuses, internal notes,
 ## Stage 7 — Service merchandising and layout integration
 Status: Completed in `1.2.0`
 
-- Recommended OpenCart products per service
-- Explicit product sort order
-- Product cards on public service pages
-- Per-store Category Layout Override following the ProBG Blog model
-- Service pages inherit their category Layout Override
-- Reusable **ProBG Services Block** module instances
-- Latest services mode
-- Category-filtered services mode
-- Featured/selected services mode
-- Multilingual block heading
-- Configurable block limit and image dimensions
-- Idempotent schema upgrade for existing installations
+Recommended products, Category Layout Override and reusable Latest/Category/Featured service blocks.
 
 ## Stage 8 — Advanced SEO and navigation
-Status: Next
+Status: Completed in `1.3.0`
 
-- Breadcrumb structured data
-- richer service-provider configuration
-- configurable section SEO metadata
-- optional service menu instances
-- sitemap priority/changefreq settings
+- Multilingual SEO metadata and description for the Services landing page
+- Configurable service-provider Organization name, URL and logo
+- JSON-LD `BreadcrumbList` generated from visible breadcrumbs
+- Configurable sitemap `changefreq`
+- Separate sitemap priorities for section, category and service URLs
+- **Services menu** mode in ProBG Services Block
+- Independent visibility controls for Services home, categories and services
+- BG/EN administration labels and documentation
 
 ## Stage 9 — Performance, security and GDPR
-Status: Planned
+Status: Next
 
 - cache invalidation review
 - enquiry retention/anonymization
