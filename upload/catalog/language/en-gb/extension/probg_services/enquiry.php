@@ -1,0 +1,10 @@
+<?php
+$_['text_success'] = 'Thank you. Your enquiry has been saved successfully as #%s.';
+$_['error_token'] = 'The form session has expired. Please try again.';
+$_['error_spam'] = 'The enquiry could not be submitted.';
+$_['error_name'] = 'Name must be between 2 and 255 characters.';
+$_['error_email'] = 'Please enter a valid email address.';
+$_['error_message'] = 'Message must contain at least 10 characters.';
+$_['error_privacy'] = 'You must agree to the processing of your data.';
+$_['mail_subject'] = 'New enquiry #%s for %s';
+$_['mail_body'] = "Enquiry: #%s\nService: %s\nName: %s\nEmail: %s\nTelephone: %s\nCompany: %s\nBudget: %s\nDesired deadline: %s\n\nMessage:\n%s";
