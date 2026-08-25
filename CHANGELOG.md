@@ -2,12 +2,12 @@
 
 All notable changes to ProBG Services are documented in this file.
 
-## [1.1.0-dev] - 2026-08-25
+## [1.0.1] - 2026-08-25
 
 ### Added
 - Public Services landing page following the ProBG Blog full-page controller pattern.
 - Public service-category pages with pagination and multilingual content.
-- Individual service pages with main image, gallery, price display, related services and enquiry CTA placeholder.
+- Individual service pages with main image, gallery, price display and related services.
 - Dedicated read-only catalog model for categories, services, galleries, related services and sitemap data.
 - Store/language scoped catalog cache keys.
 - Publication rules for disabled and future-dated services.
@@ -22,18 +22,41 @@ All notable changes to ProBG Services are documented in this file.
 - Bulgarian and English storefront language files.
 - Bootstrap-oriented Twig templates for listing, category, service, module and not-found output.
 - Services-per-page, sitemap and cache settings in administration.
+- Public enquiry form on every service where enquiries are enabled.
+- Enquiry fields for name, email, telephone, company, website, subject, budget, desired deadline and message.
+- Privacy consent validation, honeypot anti-spam field and standard OpenCart CAPTCHA integration.
+- Up to five enquiry attachments with a 5 MB per-file limit and restricted extension list.
+- Database-first enquiry persistence: valid enquiries are stored before email notification is attempted.
+- Separate `email_sent` state so SMTP failure cannot discard an enquiry.
+- Enquiry history entries for creation and notification outcome.
+- Customer, service, store, IP and user-agent association for enquiries.
+- Dedicated **Enquiries** administration section.
+- Enquiry list with filters by customer, email, service ID, status and date range.
+- Enquiry detail page with submitted data, attachment metadata and complete history.
+- Enquiry workflow statuses: New, Viewed, Needs information, Quote sent, In progress, Accepted, Rejected, Completed and Spam.
+- Internal notes and status history updates from administration.
+- Enquiry counter tile on the ProBG Services administration dashboard.
+- Localized **Enquiries** entry in the ProBG Services administration menu.
+- Bulgarian and English enquiry storefront/admin language files.
 
 ### Changed
 - Core storefront architecture aligned with the proven ProBG Blog architecture while preserving service-domain semantics.
-- OCMOD now extends the standard OpenCart SEO URL decoder/rewriter for service categories and services.
-- OCMOD now injects Services social metadata into the common theme header using the same integration strategy as ProBG Blog.
-- Administration stage indicator moved to Stage 4.
-- Development version raised to `1.1.0-dev`.
+- OCMOD extends the standard OpenCart SEO URL decoder/rewriter for service categories and services.
+- OCMOD injects Services social metadata into the common theme header using the same integration strategy as ProBG Blog.
+- Administration navigation now includes **Settings / Categories / Services / Enquiries**.
+- Module metadata, administration version and OCMOD version set to `1.0.1`.
+- Stage indicator advanced to Stage 5.
+
+### Security
+- Enquiry uploads are stored in `DIR_STORAGE/upload/` using random generated filenames instead of the original client filename.
+- Executable/script extensions are not accepted by the enquiry uploader.
+- Enquiry form validation includes required identity/contact/message fields, privacy consent, honeypot protection and optional OpenCart CAPTCHA.
 
 ### Architecture decisions
 - Service pages use Schema.org `Service`/`Offer` rather than blog-specific schemas.
-- The public service catalogue remains isolated from the enquiry workflow.
-- Enquiry persistence remains database-first: email delivery can fail without losing a valid enquiry.
+- Public service catalogue reads remain separated from the enquiry write model.
+- Enquiry persistence is database-first and independent of email delivery status.
+- Enquiry files and history use dedicated tables to keep workflow extensible.
 - OpenCart 4 remains a separate integration layer sharing the same domain contract.
 
 ## [0.3.2-dev] - 2026-08-14
