@@ -112,7 +112,6 @@ class ControllerExtensionProbgServicesEnquiry extends Controller {
         $mail->setTo($this->config->get('config_email'));
         $mail->setFrom($this->config->get('config_email'));
         $mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-        $mail->setReplyTo($data['email']);
         $mail->setSubject(sprintf($this->language->get('mail_subject'), $enquiry_id, $service['name']));
         $mail->setText(sprintf($this->language->get('mail_body'), $enquiry_id, $service['name'], $data['name'], $data['email'], $data['telephone'], $data['company'], $data['budget'], $data['desired_deadline'], $data['message']));
         $mail->send();
