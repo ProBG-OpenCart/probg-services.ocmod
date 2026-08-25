@@ -6,6 +6,7 @@ $_['text_services']='Услуги';
 $_['text_no_results']='Няма намерени услуги.';
 $_['text_read_more']='Научете повече';
 $_['text_related']='Свързани услуги';
+$_['text_recommended_products']='Препоръчани продукти';
 $_['text_price']='Цена';
 $_['text_not_found']='Страницата не е намерена';
 $_['text_pagination']='Показани %d до %d от %d (%d страници)';
