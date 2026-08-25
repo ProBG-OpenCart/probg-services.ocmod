@@ -11,10 +11,10 @@
       {% if price %}<p class="h3">{{ price_text }} {{ price }}</p>{% endif %}
       <div class="probg-service-description">{{ description }}</div>
 
-      {% if images %}
-      <div class="row probg-service-gallery">
-        {% for image in images %}<div class="col-xs-6 col-sm-4"><a href="{{ image.popup }}" target="_blank"><img src="{{ image.thumb }}" alt="{{ heading_title }}" class="img-responsive img-thumbnail"></a></div>{% endfor %}
-      </div>
+      {% if images %}<div class="row probg-service-gallery">{% for image in images %}<div class="col-xs-6 col-sm-4"><a href="{{ image.popup }}" target="_blank"><img src="{{ image.thumb }}" alt="{{ heading_title }}" class="img-responsive img-thumbnail"></a></div>{% endfor %}</div>{% endif %}
+
+      {% if products %}
+      <section class="probg-service-products"><h2>{{ text_recommended_products }}</h2><div class="row">{% for product in products %}<div class="product-layout col-lg-3 col-md-4 col-sm-6 col-xs-12"><div class="product-thumb transition"><div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" class="img-responsive"></a></div><div class="caption"><h4><a href="{{ product.href }}">{{ product.name }}</a></h4><p>{{ product.description }}</p>{% if product.rating %}<div class="rating">{% for i in 1..5 %}<span class="fa fa-stack">{% if product.rating < i %}<i class="fa fa-star-o fa-stack-2x"></i>{% else %}<i class="fa fa-star fa-stack-2x"></i>{% endif %}</span>{% endfor %}</div>{% endif %}{% if product.price %}<p class="price">{% if not product.special %}{{ product.price }}{% else %}<span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>{% endif %}{% if product.tax %}<span class="price-tax">{{ product.tax }}</span>{% endif %}</p>{% endif %}</div></div></div>{% endfor %}</div></section>
       {% endif %}
 
       {% if enquiry_status %}
@@ -25,7 +25,6 @@
         <form action="{{ enquiry_action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
           <input type="hidden" name="service_id" value="{{ service_id|default(0) }}">
           <div style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true"><label>Website confirmation<input type="text" name="website_confirm" value="" tabindex="-1" autocomplete="off"></label></div>
-
           <div class="form-group required"><label class="col-sm-3 control-label">{{ entry_name }}</label><div class="col-sm-9"><input type="text" name="name" value="{{ enquiry_data.name }}" class="form-control">{% if enquiry_errors.name %}<div class="text-danger">{{ enquiry_errors.name }}</div>{% endif %}</div></div>
           <div class="form-group required"><label class="col-sm-3 control-label">{{ entry_email }}</label><div class="col-sm-9"><input type="email" name="email" value="{{ enquiry_data.email }}" class="form-control">{% if enquiry_errors.email %}<div class="text-danger">{{ enquiry_errors.email }}</div>{% endif %}</div></div>
           <div class="form-group"><label class="col-sm-3 control-label">{{ entry_telephone }}</label><div class="col-sm-9"><input type="text" name="telephone" value="{{ enquiry_data.telephone }}" class="form-control"></div></div>
@@ -43,10 +42,7 @@
       </section>
       {% endif %}
 
-      {% if related %}
-      <h2>{{ text_related }}</h2>
-      <div class="row">{% for service in related %}<div class="col-sm-6 col-md-4"><div class="card mb-3">{% if service.image %}<a href="{{ service.href }}"><img src="{{ service.image }}" alt="{{ service.name }}" class="img-responsive"></a>{% endif %}<div class="card-body"><h3><a href="{{ service.href }}">{{ service.name }}</a></h3><p>{{ service.description }}</p></div></div></div>{% endfor %}</div>
-      {% endif %}
+      {% if related %}<h2>{{ text_related }}</h2><div class="row">{% for service in related %}<div class="col-sm-6 col-md-4"><div class="card mb-3">{% if service.image %}<a href="{{ service.href }}"><img src="{{ service.image }}" alt="{{ service.name }}" class="img-responsive"></a>{% endif %}<div class="card-body"><h3><a href="{{ service.href }}">{{ service.name }}</a></h3><p>{{ service.description }}</p></div></div></div>{% endfor %}</div>{% endif %}
       {{ content_bottom }}
     </div>{{ column_right }}
   </div>
