@@ -1,0 +1,38 @@
+<?php
+namespace Opencart\Admin\Model\Extension\ProbgServices\Module;
+
+class ProbgServices extends \Opencart\System\Engine\Model {
+    public function install(): void {
+        $this->ensureSchema();
+    }
+
+    public function uninstall(): void {
+        // Business and enquiry data are preserved by design.
+    }
+
+    public function ensureSchema(): void {
+        foreach ($this->getSchema() as $sql) {
+            $this->db->query($sql);
+        }
+    }
+
+    private function getSchema(): array {
+        $prefix = DB_PREFIX;
+
+        return [
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category` (`category_id` INT(11) NOT NULL AUTO_INCREMENT, `parent_id` INT(11) NOT NULL DEFAULT 0, `image` VARCHAR(255) NOT NULL DEFAULT '', `icon` VARCHAR(255) NOT NULL DEFAULT '', `sort_order` INT(11) NOT NULL DEFAULT 0, `status` TINYINT(1) NOT NULL DEFAULT 1, `date_added` DATETIME NOT NULL, `date_modified` DATETIME NOT NULL, PRIMARY KEY (`category_id`), KEY `parent_id` (`parent_id`), KEY `status_sort` (`status`,`sort_order`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category_description` (`category_id` INT(11) NOT NULL, `language_id` INT(11) NOT NULL, `name` VARCHAR(255) NOT NULL, `subtitle` VARCHAR(255) NOT NULL DEFAULT '', `description_short` TEXT NOT NULL, `description` MEDIUMTEXT NOT NULL, `meta_title` VARCHAR(255) NOT NULL DEFAULT '', `meta_description` VARCHAR(255) NOT NULL DEFAULT '', `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '', PRIMARY KEY (`category_id`,`language_id`), KEY `name` (`name`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category_to_store` (`category_id` INT(11) NOT NULL, `store_id` INT(11) NOT NULL, PRIMARY KEY (`category_id`,`store_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_category_to_layout` (`category_id` INT(11) NOT NULL, `store_id` INT(11) NOT NULL, `layout_id` INT(11) NOT NULL DEFAULT 0, PRIMARY KEY (`category_id`,`store_id`), KEY `layout_id` (`layout_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service` (`service_id` INT(11) NOT NULL AUTO_INCREMENT, `category_id` INT(11) NOT NULL DEFAULT 0, `image` VARCHAR(255) NOT NULL DEFAULT '', `social_image` VARCHAR(255) NOT NULL DEFAULT '', `price` DECIMAL(15,4) NOT NULL DEFAULT 0.0000, `show_price` TINYINT(1) NOT NULL DEFAULT 0, `enquiry_status` TINYINT(1) NOT NULL DEFAULT 1, `sort_order` INT(11) NOT NULL DEFAULT 0, `status` TINYINT(1) NOT NULL DEFAULT 1, `date_available` DATE NULL, `date_added` DATETIME NOT NULL, `date_modified` DATETIME NOT NULL, PRIMARY KEY (`service_id`), KEY `category_status_sort` (`category_id`,`status`,`sort_order`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_description` (`service_id` INT(11) NOT NULL, `language_id` INT(11) NOT NULL, `name` VARCHAR(255) NOT NULL, `subtitle` VARCHAR(255) NOT NULL DEFAULT '', `description_short` TEXT NOT NULL, `description` MEDIUMTEXT NOT NULL, `price_text` VARCHAR(255) NOT NULL DEFAULT '', `button_text` VARCHAR(64) NOT NULL DEFAULT '', `meta_title` VARCHAR(255) NOT NULL DEFAULT '', `meta_description` VARCHAR(255) NOT NULL DEFAULT '', `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '', PRIMARY KEY (`service_id`,`language_id`), KEY `name` (`name`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_to_store` (`service_id` INT(11) NOT NULL, `store_id` INT(11) NOT NULL, PRIMARY KEY (`service_id`,`store_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_image` (`service_image_id` INT(11) NOT NULL AUTO_INCREMENT, `service_id` INT(11) NOT NULL, `image` VARCHAR(255) NOT NULL, `sort_order` INT(11) NOT NULL DEFAULT 0, PRIMARY KEY (`service_image_id`), KEY `service_sort` (`service_id`,`sort_order`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_related` (`service_id` INT(11) NOT NULL, `related_id` INT(11) NOT NULL, PRIMARY KEY (`service_id`,`related_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_product` (`service_id` INT(11) NOT NULL, `product_id` INT(11) NOT NULL, `sort_order` INT(11) NOT NULL DEFAULT 0, PRIMARY KEY (`service_id`,`product_id`), KEY `product_id` (`product_id`), KEY `service_sort` (`service_id`,`sort_order`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_enquiry` (`enquiry_id` INT(11) NOT NULL AUTO_INCREMENT, `store_id` INT(11) NOT NULL DEFAULT 0, `service_id` INT(11) NOT NULL DEFAULT 0, `customer_id` INT(11) NOT NULL DEFAULT 0, `status_id` INT(11) NOT NULL DEFAULT 1, `assigned_user_id` INT(11) NOT NULL DEFAULT 0, `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL, `telephone` VARCHAR(64) NOT NULL DEFAULT '', `company` VARCHAR(255) NOT NULL DEFAULT '', `website` VARCHAR(255) NOT NULL DEFAULT '', `subject` VARCHAR(255) NOT NULL DEFAULT '', `message` MEDIUMTEXT NOT NULL, `budget` VARCHAR(255) NOT NULL DEFAULT '', `desired_deadline` VARCHAR(255) NOT NULL DEFAULT '', `ip` VARCHAR(40) NOT NULL DEFAULT '', `user_agent` VARCHAR(512) NOT NULL DEFAULT '', `email_sent` TINYINT(1) NOT NULL DEFAULT 0, `date_added` DATETIME NOT NULL, `date_modified` DATETIME NOT NULL, PRIMARY KEY (`enquiry_id`), KEY `service_status_date` (`service_id`,`status_id`,`date_added`), KEY `assigned_status_date` (`assigned_user_id`,`status_id`,`date_added`), KEY `store_ip_date` (`store_id`,`ip`,`date_added`), KEY `customer_date` (`customer_id`,`date_added`), KEY `email` (`email`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_enquiry_file` (`enquiry_file_id` INT(11) NOT NULL AUTO_INCREMENT, `enquiry_id` INT(11) NOT NULL, `name` VARCHAR(255) NOT NULL, `filename` VARCHAR(255) NOT NULL, `mime_type` VARCHAR(128) NOT NULL DEFAULT '', `size` INT(11) NOT NULL DEFAULT 0, `date_added` DATETIME NOT NULL, PRIMARY KEY (`enquiry_file_id`), KEY `enquiry_id` (`enquiry_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "CREATE TABLE IF NOT EXISTS `{$prefix}probg_service_enquiry_history` (`enquiry_history_id` INT(11) NOT NULL AUTO_INCREMENT, `enquiry_id` INT(11) NOT NULL, `status_id` INT(11) NOT NULL, `user_id` INT(11) NOT NULL DEFAULT 0, `comment` TEXT NOT NULL, `notify` TINYINT(1) NOT NULL DEFAULT 0, `date_added` DATETIME NOT NULL, PRIMARY KEY (`enquiry_history_id`), KEY `enquiry_date` (`enquiry_id`,`date_added`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+        ];
+    }
+}
