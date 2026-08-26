@@ -2,6 +2,70 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [1.4.0] - 2026-08-26
+
+### Български
+
+#### Добавено
+- Configurable rate limiting за публичните запитвания по магазин и IP адрес.
+- Настройки за максимален брой запитвания и период в минути.
+- Configurable upload policy: максимален брой файлове, максимален размер и разрешени разширения.
+- MIME проверка според разширението за поддържаните файлови типове.
+- Secure attachment download през permission-protected административен route, без директно излагане на storage пътя.
+- GDPR JSON export за конкретно запитване, включително metadata за файлове и история.
+- GDPR анонимизиране на конкретно запитване.
+- Retention настройка в дни и ръчно анонимизиране на всички по-стари запитвания.
+- Idempotent database индекси `assigned_status_date`, `store_ip_date` и `customer_date` за workflow, rate limiting и GDPR операции.
+- Нов административен таб **Сигурност и GDPR**.
+
+#### Променено
+- При изтриване или анонимизиране на запитване физическите файлове вече се изтриват от `DIR_STORAGE/upload/`.
+- Cache-ът `probg_services` се изчиства автоматично след добавяне, редакция или изтриване на категория/услуга и при запис на глобалните настройки.
+- Upload validation вече проверява разширение, размер и MIME type преди преместване на файла.
+- Версията е увеличена до `1.4.0`, development stage е преместен на Етап 9.
+
+#### Сигурност
+- Rate limiting намалява автоматизирания spam дори когато CAPTCHA не е активна.
+- Имената на качените файлове остават случайно генерирани и файловете се пазят извън executable web paths.
+- Secure download изисква OpenCart admin permission за секцията Запитвания.
+- Retention/anonymization премахва име, email, телефон, фирма, web адрес, съдържание на запитването, IP и user agent.
+
+#### Архитектурни решения
+- GDPR export е read-only операция и не променя workflow history.
+- Anonymization запазва минималния operational record и status history, но премахва личните данни и файловете.
+- Rate limiting използва съществуващата enquiry таблица и оптимизиран composite index вместо отделен volatile storage layer.
+
+### English
+
+#### Added
+- Configurable storefront enquiry rate limiting scoped by store and IP address.
+- Settings for maximum enquiry count and time window in minutes.
+- Configurable upload policy: maximum files, maximum file size and allowed extensions.
+- MIME validation matched to supported file extensions.
+- Secure attachment downloads through a permission-protected administration route without exposing storage paths.
+- GDPR JSON export for an individual enquiry including file metadata and workflow history.
+- GDPR anonymization for an individual enquiry.
+- Configurable retention period and manual anonymization of all older enquiries.
+- Idempotent `assigned_status_date`, `store_ip_date` and `customer_date` database indexes for workflow, rate limiting and GDPR operations.
+- New **Security and GDPR** administration tab.
+
+#### Changed
+- Physical uploaded files are deleted when an enquiry is deleted or anonymized.
+- The `probg_services` cache is invalidated automatically after category/service mutations and global settings changes.
+- Upload validation now checks extension, size and MIME type before moving a file into storage.
+- Version increased to `1.4.0` and development stage advanced to Stage 9.
+
+#### Security
+- Rate limiting reduces automated spam even when CAPTCHA is not enabled.
+- Uploaded files continue to use random generated storage filenames outside executable web paths.
+- Secure download requires OpenCart administration permission for Enquiries.
+- Retention/anonymization removes name, email, telephone, company, website, enquiry content, IP address and user agent.
+
+#### Architecture decisions
+- GDPR export is read-only and does not mutate workflow history.
+- Anonymization preserves the minimal operational record and status history while removing personal data and files.
+- Rate limiting reuses the enquiry table with a dedicated composite index instead of a separate volatile storage layer.
+
 ## [1.3.0] - 2026-08-25
 
 ### Български
