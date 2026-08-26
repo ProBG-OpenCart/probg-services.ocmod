@@ -9,7 +9,26 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  php-syntax:
+    name: PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax
+        run: find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  package-contract:
+    name: OCMOD and release contract
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,13 +38,30 @@ jobs:
         with:
           php-version: '8.1'
           coverage: none
-      - name: Validate PHP syntax
-        run: find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Validate OCMOD XML
         run: php -r '$xml=simplexml_load_file("install.xml"); if ($xml===false) { exit(1); }'
+      - name: Validate package source layout
+        shell: bash
+        run: |
+          test -f install.xml
+          test -d upload/admin
+          test -d upload/catalog
+          test -f upload/admin/controller/extension/module/probg_services.php
+          test -f upload/catalog/controller/extension/module/probg_services.php
+          if find upload -type f \( -name '.DS_Store' -o -name '*.log' -o -name '*.tmp' \) | grep -q .; then
+            echo 'Forbidden development files found under upload/' >&2
+            exit 1
+          fi
       - name: Validate release metadata
         shell: bash
         run: |
           VERSION=$(sed -n 's:.*<version>\([^<]*\)</version>.*:\1:p' install.xml | head -n1)
           test -n "$VERSION"
           grep -F "## [$VERSION]" CHANGELOG.md
+          awk -v version="$VERSION" '
+            index($0, "## [" version "]") == 1 {capture=1; next}
+            capture && /^## \[/ {exit}
+            capture {print}
+          ' CHANGELOG.md > /tmp/release-notes.md
+          grep -q '^### Български$' /tmp/release-notes.md
+          grep -q '^### English$' /tmp/release-notes.md
