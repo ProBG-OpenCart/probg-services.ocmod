@@ -43,31 +43,33 @@ Multilingual section SEO, configurable provider, `BreadcrumbList`, sitemap metad
 ## Stage 9 — Performance, security and GDPR
 Status: Completed in `1.4.0`
 
-- automatic catalogue cache invalidation after category/service/settings mutations
-- configurable store/IP enquiry rate limiting
-- configurable file count, file size and extension policy
-- extension + MIME validation before upload persistence
-- random filenames under `DIR_STORAGE/upload/`
-- permission-protected secure attachment downloads
-- physical file cleanup on delete/anonymize
-- per-enquiry GDPR JSON export
-- per-enquiry anonymization
-- configurable retention period and bulk anonymization of older enquiries
-- composite indexes for assignee workflow, rate limiting and customer/date lookups
-- BG/EN administration and storefront security messages
+Rate limiting, hardened uploads, secure downloads, GDPR export/anonymization, retention, cache invalidation and performance indexes.
 
 ## Stage 10 — Stable OpenCart 3 release
-Status: Next
+Status: Completed in `1.5.0`
 
-- compatibility matrix validation across supported OpenCart 3 releases
-- PHP compatibility pass
-- install/upgrade/migration tests from 1.0.1, 1.1.0, 1.2.0 and 1.3.0
-- OCMOD conflict review against standard OpenCart files
-- database schema consistency checks
-- storefront/admin regression checklist
-- final stable documentation and upgrade guide
+- PHP syntax CI matrix for 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3
+- OCMOD XML and package source-contract validation
+- installation ZIP integrity and forbidden-file validation
+- bilingual release-metadata validation before publishing
+- explicit OpenCart 3 compatibility levels and upgrade contract
+- upgrade guide for existing 1.0.1–1.4.0 installations
+- comprehensive storefront/admin/SEO/security/GDPR regression checklist
+- documented OCMOD core-anchor review process
+
+The CI matrix establishes syntax/package compatibility. Runtime acceptance on a specific production stack remains governed by `docs/REGRESSION_CHECKLIST.md` because themes, PHP builds and other OCMOD extensions can alter runtime behavior.
 
 ## Stage 11 — OpenCart 4 edition
-Status: Planned
+Status: In progress
 
-Port the stable domain contract to OpenCart 4 namespaces, events, installer structure and administration UI while preserving database and functional semantics where practical.
+Planned implementation:
+
+- separate OpenCart 4 installable package
+- namespaced admin/catalog controllers and models
+- OpenCart 4 extension installer metadata
+- event-based integration where OpenCart 4 provides a stable event hook
+- OpenCart 4 SEO URL integration
+- Bootstrap 5 administration views
+- preserved service/category/enquiry/layout/merchandising/security domain semantics
+- OpenCart 4-specific compatibility and migration documentation
+- package/release automation for the OpenCart 4 artifact

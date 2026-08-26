@@ -33,6 +33,12 @@ jobs:
         run: |
           find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
           php -r '$xml=simplexml_load_file("install.xml"); if ($xml===false) { exit(1); }'
+          test -f upload/admin/controller/extension/module/probg_services.php
+          test -f upload/catalog/controller/extension/module/probg_services.php
+          if find upload -type f \( -name '.DS_Store' -o -name '*.log' -o -name '*.tmp' \) | grep -q .; then
+            echo 'Forbidden development files found under upload/' >&2
+            exit 1
+          fi
 
       - name: Read module version
         id: version
@@ -47,6 +53,20 @@ jobs:
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
           echo "package=probg-services-$VERSION.ocmod.zip" >> "$GITHUB_OUTPUT"
 
+      - name: Validate bilingual release metadata
+        shell: bash
+        run: |
+          VERSION='${{ steps.version.outputs.version }}'
+          grep -F "## [$VERSION]" CHANGELOG.md
+          awk -v version="$VERSION" '
+            index($0, "## [" version "]") == 1 {capture=1; next}
+            capture && /^## \[/ {exit}
+            capture {print}
+          ' CHANGELOG.md > /tmp/release-notes.md
+          test -s /tmp/release-notes.md
+          grep -q '^### Български$' /tmp/release-notes.md
+          grep -q '^### English$' /tmp/release-notes.md
+
       - name: Build OCMOD package
         shell: bash
         run: |
@@ -54,6 +74,15 @@ jobs:
           rm -f "dist/$PACKAGE"
           mkdir -p dist
           zip -r -9 "dist/$PACKAGE" install.xml upload -x '*.DS_Store' -x '*/.gitkeep'
+          unzip -t "dist/$PACKAGE"
+          unzip -Z1 "dist/$PACKAGE" > /tmp/package-files.txt
+          grep -Fxq 'install.xml' /tmp/package-files.txt
+          grep -Fxq 'upload/admin/controller/extension/module/probg_services.php' /tmp/package-files.txt
+          grep -Fxq 'upload/catalog/controller/extension/module/probg_services.php' /tmp/package-files.txt
+          if grep -E '(^|/)(\.git|node_modules|tests?|docs?)/|\.log$|\.tmp$|\.DS_Store$' /tmp/package-files.txt; then
+            echo 'Forbidden files found in installation package' >&2
+            exit 1
+          fi
           find dist -maxdepth 1 -type f -name '*.ocmod.zip' -print0 | sort -z | xargs -0 sha256sum > dist/SHA256SUMS
 
       - name: Commit release artifacts
@@ -66,22 +95,6 @@ jobs:
             git commit -m "chore(release): build ${{ steps.version.outputs.version }} package"
             git push origin HEAD:main
           fi
-
-      - name: Extract bilingual release notes from CHANGELOG
-        shell: bash
-        run: |
-          VERSION='${{ steps.version.outputs.version }}'
-          awk -v version="$VERSION" '
-            index($0, "## [" version "]") == 1 {capture=1; next}
-            capture && /^## \[/ {exit}
-            capture {print}
-          ' CHANGELOG.md > /tmp/release-notes.md
-          if [ ! -s /tmp/release-notes.md ]; then
-            echo "No CHANGELOG section found for $VERSION" >&2
-            exit 1
-          fi
-          grep -q '^### Български$' /tmp/release-notes.md || { echo "Missing Bulgarian release notes" >&2; exit 1; }
-          grep -q '^### English$' /tmp/release-notes.md || { echo "Missing English release notes" >&2; exit 1; }
 
       - name: Create version tag
         shell: bash
