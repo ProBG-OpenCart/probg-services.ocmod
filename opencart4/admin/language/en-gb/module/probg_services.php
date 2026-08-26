@@ -1,6 +1,19 @@
 <?php
 $_['heading_title'] = 'ProBG Services';
+$_['text_home'] = 'Home';
+$_['text_extension'] = 'Extensions';
+$_['text_success'] = 'Success: ProBG Services settings have been saved!';
+$_['text_edit'] = 'OpenCart 4 settings';
 $_['text_stage'] = 'OpenCart 4 development';
 $_['text_version'] = 'Version';
 $_['text_stage_label'] = 'Stage';
-$_['text_info'] = 'The separate OpenCart 4 implementation has started with its own package contract and namespaced integration layer.';
+$_['text_info'] = 'OpenCart 4 uses its own namespaced integration layer while preserving the stable Services domain contract.';
+$_['entry_status'] = 'Status';
+$_['entry_cache_status'] = 'Cache';
+$_['entry_limit'] = 'Services per page';
+$_['text_enabled'] = 'Enabled';
+$_['text_disabled'] = 'Disabled';
+$_['button_save'] = 'Save';
+$_['button_back'] = 'Back';
+$_['error_permission'] = 'Warning: You do not have permission to modify ProBG Services!';
+$_['error_limit'] = 'Services per page must be between 1 and 100.';
