@@ -46,28 +46,30 @@ Status: Completed in `1.4.0`
 Rate limiting, hardened uploads, secure downloads, GDPR export/anonymization, retention, cache invalidation and performance indexes.
 
 ## Stage 10 — Stable OpenCart 3 release
-Status: In progress for `1.5.0`
-
-Completed in the stabilization branch:
+Status: Completed in `1.5.0`
 
 - PHP syntax CI matrix for 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3
-- OCMOD/package source contract validation
+- OCMOD XML and package source-contract validation
 - installation ZIP integrity and forbidden-file validation
-- bilingual release-metadata validation before packaging
+- bilingual release-metadata validation before publishing
 - explicit OpenCart 3 compatibility levels and upgrade contract
-- upgrade guide for 1.0.1 → current through 1.4.0 → current
-- comprehensive storefront/admin/SEO/security regression checklist
-- OCMOD anchor review started against official OpenCart 3 core files
+- upgrade guide for existing 1.0.1–1.4.0 installations
+- comprehensive storefront/admin/SEO/security/GDPR regression checklist
+- documented OCMOD core-anchor review process
 
-Remaining release gate:
-
-- complete standard-core anchor review across representative 3.0.2.x and 3.0.3.x versions
-- run documented runtime install/upgrade regression cases on test OpenCart instances
-- fix any runtime regressions discovered
-- finalize 1.5.0 bilingual CHANGELOG, README and release notes
-- PR validation, squash merge and automated `v1.5.0` release
+The CI matrix establishes syntax/package compatibility. Runtime acceptance on a specific production stack remains governed by `docs/REGRESSION_CHECKLIST.md` because themes, PHP builds and other OCMOD extensions can alter runtime behavior.
 
 ## Stage 11 — OpenCart 4 edition
-Status: Planned
+Status: In progress
 
-Port the stable domain contract to OpenCart 4 namespaces, events, installer structure and administration UI while preserving database and functional semantics where practical.
+Planned implementation:
+
+- separate OpenCart 4 installable package
+- namespaced admin/catalog controllers and models
+- OpenCart 4 extension installer metadata
+- event-based integration where OpenCart 4 provides a stable event hook
+- OpenCart 4 SEO URL integration
+- Bootstrap 5 administration views
+- preserved service/category/enquiry/layout/merchandising/security domain semantics
+- OpenCart 4-specific compatibility and migration documentation
+- package/release automation for the OpenCart 4 artifact
