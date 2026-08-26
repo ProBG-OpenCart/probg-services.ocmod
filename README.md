@@ -6,11 +6,11 @@ A multilingual service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`1.3.0`
+`1.4.0`
 
 Installation package:
 
-`dist/probg-services-1.3.0.ocmod.zip`
+`dist/probg-services-1.4.0.ocmod.zip`
 
 ## Editions
 
@@ -19,81 +19,82 @@ Installation package:
 
 ## Architecture
 
-ProBG Services follows the same core architecture proven in ProBG Blog, adapted to the service catalogue domain. It includes a full-page/module storefront controller, read-only catalogue model, standard OpenCart SEO URL integration, hierarchical canonical URLs, multi-store/language-aware queries, caching, sitemap integration, Open Graph/Twitter/JSON-LD, separate enquiry workflow, category-specific layout overrides and reusable OpenCart Layout module instances.
+ProBG Services follows the core architecture proven in ProBG Blog, adapted to services, merchandising and enquiry workflows. It provides multi-store/language catalogue data, standard SEO URL integration, hierarchical canonical URLs, OpenCart Layout modules, structured data, sitemap integration, caching and a database-first enquiry subsystem.
 
-## Implemented
+## Main capabilities
 
 ### Administration
 
-- localized **Services** administration menu;
-- Settings / Categories / Services / Enquiries navigation;
-- category and service CRUD;
-- gallery, pricing, SEO and related services;
-- recommended products per service with explicit sort order;
+- Services / Categories / Enquiries / Settings navigation;
+- multilingual category and service CRUD;
+- galleries, pricing, SEO, related services and recommended products;
 - per-store Category Layout Override;
-- multilingual Services landing-page SEO content;
-- configurable service-provider Organization name, URL and logo;
-- configurable sitemap change frequency and priorities;
-- enquiry list, detail, statuses, assignee, internal notes and customer replies;
-- BG/EN administration languages and per-route permissions.
+- reusable service blocks and navigation menus;
+- enquiry workflow with statuses, assignee, internal notes and customer replies;
+- secure file downloads, GDPR export and anonymization;
+- configurable rate limiting, upload policy and retention;
+- BG/EN administration languages and route permissions.
 
 ### Public Services section
 
-- Services landing page with multilingual title, description and metadata;
-- service-category pages and individual service pages;
+- Services landing, category and service pages;
 - breadcrumbs and JSON-LD `BreadcrumbList`;
 - galleries, pricing, related services and recommended products;
-- category Layout Override inherited by services;
 - Open Graph, Twitter Cards and JSON-LD `CollectionPage`, `Service`, `Offer`, `Organization`;
-- configurable provider data with store fallbacks;
-- multi-store/language filtering and per-service enquiry forms.
+- multi-store/language filtering;
+- database-first per-service enquiry forms;
+- CAPTCHA/honeypot plus configurable IP rate limiting.
 
-### Reusable OpenCart Layout blocks
+### Security and GDPR
 
-**ProBG Services Block** can be instantiated multiple times and assigned through standard OpenCart Layouts.
+Version 1.4.0 adds:
 
-Modes:
+- rate limiting by store + IP;
+- upload extension, file-count and file-size policy;
+- extension + MIME validation for uploaded files;
+- generated storage filenames under `DIR_STORAGE/upload/`;
+- permission-protected attachment downloads;
+- physical file cleanup when enquiries are deleted or anonymized;
+- per-enquiry JSON GDPR export;
+- per-enquiry anonymization;
+- configurable retention period with bulk anonymization of older enquiries;
+- optimized indexes for rate limiting, assignee workflow and customer/date lookups.
 
-- Latest services;
-- Services from a selected category;
-- Featured/selected services;
-- Services menu.
+Anonymization preserves the minimal operational record and workflow history while removing personal contact/content fields, IP/user-agent values and attachments.
 
-Menu instances can independently show the Services home link, service categories and individual services. Content blocks support multilingual headings, limits and image dimensions.
+### Performance
 
-### Enquiries
-
-A valid enquiry is persisted to the database before email delivery is attempted. Attachments are stored under `DIR_STORAGE/upload/` using generated filenames. The administration workflow supports assignment, internal notes, status changes and optional customer-facing replies. Email failure never discards stored workflow state.
+The `probg_services` catalogue cache is invalidated automatically after category/service mutations and global settings changes. Schema/index upgrades are idempotent and run from **Services → Settings**.
 
 ### SEO and sitemap
 
 - standard OpenCart `seo_url` records;
 - hierarchical `/services/category/service` URLs;
 - canonical URLs and 301 correction;
-- multilingual SEO for the Services landing page;
-- Open Graph and Twitter Cards;
-- JSON-LD `CollectionPage`, `Service`, `Offer`, `Organization` and `BreadcrumbList`;
-- dedicated Services sitemap endpoint and standard Google Sitemap integration;
-- configurable sitemap `changefreq` and separate priorities for section/category/service;
-- store/language scoped catalogue cache.
+- multilingual landing-page SEO;
+- configurable provider Organization data;
+- configurable sitemap `changefreq` and priorities;
+- dedicated Services sitemap plus standard Google Sitemap integration.
 
-## Upgrade notes
+## Upgrade notes for 1.4.0
 
-Opening **Services → Settings** runs the idempotent schema check introduced in 1.2.0. Existing service, category and enquiry data is preserved.
+After updating, open **Services → Settings** once. The idempotent schema check adds the new enquiry indexes where missing. Existing categories, services and enquiries are preserved.
+
+Review the new **Security and GDPR** tab before enabling attachments in production, especially rate-limit thresholds, permitted extensions and retention days.
 
 ## OpenCart 4
 
-OpenCart 4 will use a separate installable package while preserving the same service/category/enquiry/layout/merchandising/SEO domain contract. See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
+OpenCart 4 will use a separate package while preserving the service/category/enquiry/layout/merchandising/security domain contract. See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
 
 ## Installation
 
-1. Download `probg-services-1.3.0.ocmod.zip` from GitHub Releases or `dist/`.
-2. Upload it through **Extensions → Installer**.
+1. Download `probg-services-1.4.0.ocmod.zip` from GitHub Releases or `dist/`.
+2. Upload through **Extensions → Installer**.
 3. Refresh **Extensions → Modifications**.
 4. Install **ProBG Services** from **Extensions → Extensions → Modules**.
-5. Open **Services → Settings** and configure status, SEO, provider, sitemap and cache settings.
-6. Create categories and services.
-7. Optionally create **ProBG Services Block** instances for service cards or navigation menus.
+5. Open **Services → Settings** and configure the extension.
+6. Review **Security and GDPR** settings.
+7. Create categories, services and optional Services Block instances.
 
 ---
 
@@ -101,20 +102,20 @@ OpenCart 4 will use a separate installable package while preserving the same ser
 
 ## Описание
 
-**ProBG Services** е многоезичен модул за OpenCart за управление и представяне на услуги, категории услуги, препоръчани продукти и клиентски запитвания. Архитектурата следва модела на ProBG Blog, адаптиран към услуги.
+**ProBG Services** е многоезичен модул за OpenCart за услуги, категории, препоръчани продукти и клиентски запитвания. Архитектурата следва модела на ProBG Blog, адаптиран към service-domain логика.
 
-## Ново във версия 1.3.0
+## Ново във версия 1.4.0
 
-- многоезично SEO съдържание за основната страница „Услуги“;
-- настройки за име, URL и лого на доставчика на услугите;
-- JSON-LD `BreadcrumbList`;
-- configurable sitemap `changefreq` и priority стойности;
-- режим **Меню Услуги** в `ProBG Services Block`;
-- отделен контрол дали менюто да показва началната страница, категориите и услугите.
-
-## Запитвания
-
-Към всяка услуга може да има собствена форма за запитване. Запитването се записва първо в базата данни, след което се изпраща email. В **Услуги → Запитвания** има списък, филтри, статуси, назначаване към администратор, вътрешни бележки, клиентски отговори и история.
+- rate limiting на запитванията по магазин и IP;
+- настройки за брой, размер и разширения на файловете;
+- MIME проверка на качените файлове;
+- защитено сваляне на файловете от администрацията;
+- автоматично изтриване на физическите файлове при delete/anonymize;
+- GDPR JSON export;
+- анонимизиране на едно запитване;
+- retention период и масово анонимизиране на старите запитвания;
+- автоматично изчистване на catalogue cache след промени;
+- оптимизирани database индекси.
 
 ## Подкрепете разработката
 

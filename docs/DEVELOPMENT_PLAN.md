@@ -38,31 +38,34 @@ Recommended products, Category Layout Override and reusable Latest/Category/Feat
 ## Stage 8 — Advanced SEO and navigation
 Status: Completed in `1.3.0`
 
-- Multilingual SEO metadata and description for the Services landing page
-- Configurable service-provider Organization name, URL and logo
-- JSON-LD `BreadcrumbList` generated from visible breadcrumbs
-- Configurable sitemap `changefreq`
-- Separate sitemap priorities for section, category and service URLs
-- **Services menu** mode in ProBG Services Block
-- Independent visibility controls for Services home, categories and services
-- BG/EN administration labels and documentation
+Multilingual section SEO, configurable provider, `BreadcrumbList`, sitemap metadata and Services menu instances.
 
 ## Stage 9 — Performance, security and GDPR
-Status: Next
+Status: Completed in `1.4.0`
 
-- cache invalidation review
-- enquiry retention/anonymization
-- rate limiting
-- stronger MIME/content validation for attachments
-- configurable upload policy
-- secure attachment download
-- database indexes/performance testing
-- GDPR export/delete workflow
+- automatic catalogue cache invalidation after category/service/settings mutations
+- configurable store/IP enquiry rate limiting
+- configurable file count, file size and extension policy
+- extension + MIME validation before upload persistence
+- random filenames under `DIR_STORAGE/upload/`
+- permission-protected secure attachment downloads
+- physical file cleanup on delete/anonymize
+- per-enquiry GDPR JSON export
+- per-enquiry anonymization
+- configurable retention period and bulk anonymization of older enquiries
+- composite indexes for assignee workflow, rate limiting and customer/date lookups
+- BG/EN administration and storefront security messages
 
 ## Stage 10 — Stable OpenCart 3 release
-Status: Planned
+Status: Next
 
-Full compatibility validation, migration tests, release packaging and upgrade documentation.
+- compatibility matrix validation across supported OpenCart 3 releases
+- PHP compatibility pass
+- install/upgrade/migration tests from 1.0.1, 1.1.0, 1.2.0 and 1.3.0
+- OCMOD conflict review against standard OpenCart files
+- database schema consistency checks
+- storefront/admin regression checklist
+- final stable documentation and upgrade guide
 
 ## Stage 11 — OpenCart 4 edition
 Status: Planned

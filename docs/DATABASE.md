@@ -21,53 +21,43 @@ ProBG Services uses dedicated tables with the active OpenCart database prefix.
 - `probg_service_enquiry_file`
 - `probg_service_enquiry_history`
 
-## Stage 7 additions
+## Catalogue relation tables
 
-### `probg_service_category_to_layout`
+`probg_service_category_to_layout` stores an optional OpenCart Layout Override by `(category_id, store_id)`.
 
-Stores the optional OpenCart Layout Override for a service category per store.
-
-Primary key:
-
-`(category_id, store_id)`
-
-Fields:
-
-- `category_id`
-- `store_id`
-- `layout_id`
-
-A missing row or `layout_id = 0` means OpenCart uses its normal route layout resolution.
-
-### `probg_service_product`
-
-Stores recommended OpenCart products for each service.
-
-Primary key:
-
-`(service_id, product_id)`
-
-Fields:
-
-- `service_id`
-- `product_id`
-- `sort_order`
-
-The relation is deliberately separate from the service table so products remain queryable and can have explicit ordering.
+`probg_service_product` stores recommended products by `(service_id, product_id)` with explicit `sort_order`.
 
 ## Enquiry persistence
 
-The enquiry record includes store, service, customer identity, contact details, message, budget, requested deadline, status, assigned administrator, IP, user agent, email-delivery state and timestamps.
+The enquiry record stores store/service/customer references, contact data, message content, budget/deadline, workflow status, assigned administrator, IP, user agent, email-delivery state and timestamps.
 
 An enquiry is committed before notification email is attempted. A mail error never removes an otherwise valid enquiry.
 
+## Stage 9 performance indexes
+
+Version `1.4.0` adds these idempotent indexes to `probg_service_enquiry`:
+
+- `assigned_status_date (assigned_user_id, status_id, date_added)` — administration workflow/filter support;
+- `store_ip_date (store_id, ip, date_added)` — rate-limit lookup;
+- `customer_date (customer_id, date_added)` — customer/GDPR lookup preparation.
+
+`ensureSchema()` uses `SHOW INDEX` and adds only missing indexes, so existing installations can upgrade without reinstalling.
+
+## GDPR data lifecycle
+
+A normal enquiry retains all submitted data and its attachments.
+
+An anonymized enquiry retains the minimal operational record (ID, store/service relationship, workflow status/history and timestamps) while personal/contact/content data is removed. File records and physical uploaded files are deleted.
+
+Deleting an enquiry removes its history, file records, physical uploaded files and the enquiry record itself.
+
 ## Upgrade behavior
 
-Version `1.2.0` introduces idempotent schema upgrades through `ensureSchema()`. Opening **Services → Settings** executes `CREATE TABLE IF NOT EXISTS` statements, allowing an existing installation to receive additive tables without uninstall/reinstall and without deleting existing data.
+Additive tables and indexes are applied idempotently when **Services → Settings** opens. Existing service, category and enquiry records are preserved.
 
 ## Data integrity
 
 - Relationships are maintained by application logic for broad OpenCart compatibility.
-- Indexes cover category/status sorting, service/status/date filtering, store, email, layout lookup, product lookup and enquiry history.
+- Indexes cover catalogue sorting, store/language filtering, layout/product lookup, enquiry workflow, rate limiting and customer/date queries.
 - Uploaded files are stored outside executable paths and referenced from the database.
 - Uninstall preserves tables and business data; destructive removal requires an explicit purge action.

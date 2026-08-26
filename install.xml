@@ -2,7 +2,7 @@
 <modification>
   <name>ProBG Services</name>
   <code>probg_services</code>
-  <version>1.3.0</version>
+  <version>1.4.0</version>
   <author>ProBG</author>
   <link>https://probg.com/</link>
   <file path="admin/controller/common/column_left.php"><operation><search><![CDATA[// Design]]></search><add position="before"><![CDATA[
