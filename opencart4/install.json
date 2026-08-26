@@ -1,0 +1,8 @@
+{
+  "name": "ProBG Services",
+  "description": "Multilingual services catalogue, merchandising and enquiry management for OpenCart 4.",
+  "code": "probg_services",
+  "version": "2.0.0-dev",
+  "author": "ProBG",
+  "link": "https://probg.com/"
+}
