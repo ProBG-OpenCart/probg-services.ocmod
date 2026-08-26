@@ -6,16 +6,16 @@ A multilingual service catalogue and enquiry-management extension for OpenCart.
 
 ## Current version
 
-`1.4.0`
+`1.5.0`
 
 Installation package:
 
-`dist/probg-services-1.4.0.ocmod.zip`
+`dist/probg-services-1.5.0.ocmod.zip`
 
 ## Editions
 
-- OpenCart 3: active/stable development line
-- OpenCart 4: planned as a separate platform-specific package using the same domain contract
+- OpenCart 3: stable line
+- OpenCart 4: separate platform-specific edition under Stage 11 development
 
 ## Architecture
 
@@ -47,20 +47,31 @@ ProBG Services follows the core architecture proven in ProBG Blog, adapted to se
 
 ### Security and GDPR
 
-Version 1.4.0 adds:
-
 - rate limiting by store + IP;
 - upload extension, file-count and file-size policy;
 - extension + MIME validation for uploaded files;
 - generated storage filenames under `DIR_STORAGE/upload/`;
 - permission-protected attachment downloads;
 - physical file cleanup when enquiries are deleted or anonymized;
-- per-enquiry JSON GDPR export;
-- per-enquiry anonymization;
-- configurable retention period with bulk anonymization of older enquiries;
-- optimized indexes for rate limiting, assignee workflow and customer/date lookups.
+- per-enquiry JSON GDPR export and anonymization;
+- configurable retention period with bulk anonymization;
+- optimized indexes for enquiry workflow and GDPR operations.
 
-Anonymization preserves the minimal operational record and workflow history while removing personal contact/content fields, IP/user-agent values and attachments.
+### Stable OpenCart 3 release hardening
+
+Version `1.5.0` adds the stable-release gate for the OpenCart 3 edition:
+
+- PHP syntax CI matrix for PHP 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3;
+- OCMOD XML validation;
+- package source-contract checks;
+- generated ZIP integrity checks;
+- forbidden development-file checks;
+- bilingual release-metadata validation;
+- explicit compatibility and upgrade documentation;
+- full storefront/admin/SEO/security regression checklist;
+- documented OCMOD core-anchor review process.
+
+PHP matrix results are syntax-level compatibility evidence. Exact production compatibility still depends on the OpenCart build, PHP stack, theme and installed modifications, so `docs/REGRESSION_CHECKLIST.md` remains the runtime acceptance gate.
 
 ### Performance
 
@@ -76,19 +87,19 @@ The `probg_services` catalogue cache is invalidated automatically after category
 - configurable sitemap `changefreq` and priorities;
 - dedicated Services sitemap plus standard Google Sitemap integration.
 
-## Upgrade notes for 1.4.0
+## Upgrade notes for 1.5.0
 
-After updating, open **Services → Settings** once. The idempotent schema check adds the new enquiry indexes where missing. Existing categories, services and enquiries are preserved.
+Upgrade in place using the new package, refresh **Extensions → Modifications**, then open **Services → Settings** once to execute idempotent schema/index checks. Existing categories, services, enquiries and settings are preserved by design.
 
-Review the new **Security and GDPR** tab before enabling attachments in production, especially rate-limit thresholds, permitted extensions and retention days.
+See `docs/UPGRADE.md`, `docs/COMPATIBILITY.md` and `docs/REGRESSION_CHECKLIST.md` before production deployment.
 
 ## OpenCart 4
 
-OpenCart 4 will use a separate package while preserving the service/category/enquiry/layout/merchandising/security domain contract. See `docs/ARCHITECTURE.md` and `docs/COMPATIBILITY.md`.
+OpenCart 4 uses a separate package and integration layer while preserving the service/category/enquiry/layout/merchandising/security domain contract. Stage 11 begins from the stable `1.5.0` OpenCart 3 contract.
 
 ## Installation
 
-1. Download `probg-services-1.4.0.ocmod.zip` from GitHub Releases or `dist/`.
+1. Download `probg-services-1.5.0.ocmod.zip` from GitHub Releases or `dist/`.
 2. Upload through **Extensions → Installer**.
 3. Refresh **Extensions → Modifications**.
 4. Install **ProBG Services** from **Extensions → Extensions → Modules**.
@@ -104,18 +115,17 @@ OpenCart 4 will use a separate package while preserving the service/category/enq
 
 **ProBG Services** е многоезичен модул за OpenCart за услуги, категории, препоръчани продукти и клиентски запитвания. Архитектурата следва модела на ProBG Blog, адаптиран към service-domain логика.
 
-## Ново във версия 1.4.0
+## Ново във версия 1.5.0
 
-- rate limiting на запитванията по магазин и IP;
-- настройки за брой, размер и разширения на файловете;
-- MIME проверка на качените файлове;
-- защитено сваляне на файловете от администрацията;
-- автоматично изтриване на физическите файлове при delete/anonymize;
-- GDPR JSON export;
-- анонимизиране на едно запитване;
-- retention период и масово анонимизиране на старите запитвания;
-- автоматично изчистване на catalogue cache след промени;
-- оптимизирани database индекси.
+- стабилизиран release процес за OpenCart 3;
+- PHP syntax CI matrix за PHP 7.3–8.3;
+- автоматична OCMOD XML проверка;
+- автоматични проверки на структурата и целостта на `.ocmod.zip` пакета;
+- проверка за забранени development файлове;
+- задължителни двуезични release notes;
+- подробна compatibility документация;
+- upgrade guide;
+- пълен regression checklist за администрация, storefront, SEO, запитвания, сигурност и GDPR.
 
 ## Подкрепете разработката
 
