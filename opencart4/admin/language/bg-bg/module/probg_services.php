@@ -1,6 +1,19 @@
 <?php
 $_['heading_title'] = 'ProBG Services';
+$_['text_home'] = 'Начало';
+$_['text_extension'] = 'Разширения';
+$_['text_success'] = 'Настройките на ProBG Services са записани успешно!';
+$_['text_edit'] = 'Настройки за OpenCart 4';
 $_['text_stage'] = 'OpenCart 4 разработка';
 $_['text_version'] = 'Версия';
 $_['text_stage_label'] = 'Етап';
-$_['text_info'] = 'Започната е отделната OpenCart 4 реализация със собствен package contract и namespaced integration layer.';
+$_['text_info'] = 'OpenCart 4 използва отделен namespaced integration layer, като запазва стабилния domain contract на Services.';
+$_['entry_status'] = 'Статус';
+$_['entry_cache_status'] = 'Кеш';
+$_['entry_limit'] = 'Услуги на страница';
+$_['text_enabled'] = 'Включено';
+$_['text_disabled'] = 'Изключено';
+$_['button_save'] = 'Запази';
+$_['button_back'] = 'Назад';
+$_['error_permission'] = 'Нямате права за промяна на ProBG Services!';
+$_['error_limit'] = 'Броят услуги на страница трябва да бъде между 1 и 100.';
