@@ -48,28 +48,33 @@ Rate limiting, hardened uploads, secure downloads, GDPR export/anonymization, re
 ## Stage 10 — Stable OpenCart 3 release
 Status: Completed in `1.5.0`
 
-- PHP syntax CI matrix for 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3
-- OCMOD XML and package source-contract validation
-- installation ZIP integrity and forbidden-file validation
-- bilingual release-metadata validation before publishing
-- explicit OpenCart 3 compatibility levels and upgrade contract
-- upgrade guide for existing 1.0.1–1.4.0 installations
-- comprehensive storefront/admin/SEO/security/GDPR regression checklist
-- documented OCMOD core-anchor review process
-
-The CI matrix establishes syntax/package compatibility. Runtime acceptance on a specific production stack remains governed by `docs/REGRESSION_CHECKLIST.md` because themes, PHP builds and other OCMOD extensions can alter runtime behavior.
+Stable OC3 package contract, PHP syntax matrix, upgrade/regression documentation and hardened release automation.
 
 ## Stage 11 — OpenCart 4 edition
-Status: In progress
+Status: In progress (`2.0.0-dev`)
 
-Planned implementation:
+Completed so far:
 
-- separate OpenCart 4 installable package
-- namespaced admin/catalog controllers and models
-- OpenCart 4 extension installer metadata
-- event-based integration where OpenCart 4 provides a stable event hook
-- OpenCart 4 SEO URL integration
-- Bootstrap 5 administration views
-- preserved service/category/enquiry/layout/merchandising/security domain semantics
-- OpenCart 4-specific compatibility and migration documentation
-- package/release automation for the OpenCart 4 artifact
+- separate `opencart4/` package source tree with `install.json`;
+- OpenCart 4 namespaced admin and catalog controllers;
+- Bootstrap 5 administration settings view;
+- native OC4 `.save` JSON settings action with permission and validation checks;
+- idempotent OC4 schema installer preserving the stable OC3 table/domain contract;
+- uninstall policy that preserves business and enquiry data;
+- shared multilingual/multi-store storefront read model for categories and latest services;
+- initial real storefront rendering from the shared Services tables;
+- BG/EN administration and storefront language resources;
+- dedicated OC4 PHP 8.0–8.4 syntax CI matrix;
+- separate `install.json` and OC4 package-structure validation gate;
+- OpenCart 4 architecture documentation and explicit package boundary from OC3.
+
+Next implementation slice:
+
+- full OC4 category administration CRUD;
+- full OC4 service administration CRUD, gallery and merchandising links;
+- enquiry submission and administration workflow;
+- secure attachments / GDPR parity;
+- OC4 events for navigation, metadata, sitemap and cache invalidation;
+- SEO URL and canonical routing parity;
+- reusable OC4 service blocks and layout integration;
+- OpenCart 4 package builder, migration/regression documentation and stable release automation.
