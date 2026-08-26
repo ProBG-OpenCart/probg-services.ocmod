@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   php-syntax:
-    name: PHP ${{ matrix.php }} syntax
+    name: OC3 PHP ${{ matrix.php }} syntax
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -24,11 +24,29 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-      - name: Validate PHP syntax
+      - name: Validate OpenCart 3 PHP syntax
         run: find upload -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
+  opencart4-syntax:
+    name: OC4 PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate OpenCart 4 PHP syntax
+        run: find opencart4/admin opencart4/catalog -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
   package-contract:
-    name: OCMOD and release contract
+    name: OC3 OCMOD and release contract
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,3 +83,24 @@ jobs:
           ' CHANGELOG.md > /tmp/release-notes.md
           grep -q '^### Български$' /tmp/release-notes.md
           grep -q '^### English$' /tmp/release-notes.md
+
+  opencart4-contract:
+    name: OC4 package contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate install.json and structure
+        shell: bash
+        run: |
+          php -r '$data=json_decode(file_get_contents("opencart4/install.json"), true, 512, JSON_THROW_ON_ERROR); foreach (["name","version","author","link"] as $key) { if (empty($data[$key])) { fwrite(STDERR, "Missing $key in install.json\n"); exit(1); } }'
+          test -f opencart4/admin/controller/module/probg_services.php
+          test -f opencart4/admin/model/module/probg_services.php
+          test -f opencart4/catalog/controller/module/probg_services.php
+          test -f opencart4/catalog/model/module/probg_services.php
+          test -f opencart4/admin/view/template/module/probg_services.twig
+          test -f opencart4/catalog/view/template/module/probg_services.twig
+          if find opencart4 -type f \( -name '.DS_Store' -o -name '*.log' -o -name '*.tmp' \) | grep -q .; then
+            echo 'Forbidden development files found under opencart4/' >&2
+            exit 1
+          fi
