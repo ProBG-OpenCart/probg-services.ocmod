@@ -2,6 +2,54 @@
 
 All notable changes to ProBG Services are documented in this file.
 
+## [1.5.0] - 2026-08-26
+
+### Български
+
+#### Добавено
+- PHP syntax CI matrix за PHP 7.3, 7.4, 8.0, 8.1, 8.2 и 8.3.
+- OCMOD/package source-contract validation преди merge.
+- Автоматична проверка на структурата и целостта на генерирания `.ocmod.zip` пакет.
+- Проверка за забранени development файлове в release пакета.
+- Задължителна проверка за двуезични release notes преди публикуване.
+- Разширена `docs/COMPATIBILITY.md` документация за OpenCart 3 и PHP нивата на съвместимост.
+- `docs/UPGRADE.md` с upgrade процедура за съществуващи инсталации от 1.0.1–1.4.0.
+- `docs/REGRESSION_CHECKLIST.md` с storefront, admin, SEO, enquiry, security и GDPR acceptance checklist.
+
+#### Променено
+- Release workflow-ът вече валидира пакета след създаване и преди tag/Release.
+- OpenCart 3 линията е обозначена като стабилна версия `1.5.0`.
+- Development stage е преместен на Етап 10.
+- README е актуализиран с stable release, compatibility и upgrade указания.
+
+#### Архитектурни решения
+- PHP CI matrix доказва syntax-level съвместимост, но runtime съвместимостта остава зависима от конкретния OpenCart build, PHP stack, тема и други OCMOD разширения.
+- Runtime regression checklist остава задължителният production acceptance gate.
+- OpenCart 4 ще бъде отделен package/integration layer върху стабилния domain contract на OpenCart 3.
+
+### English
+
+#### Added
+- PHP syntax CI matrix for PHP 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3.
+- OCMOD/package source-contract validation before merge.
+- Automated generated `.ocmod.zip` structure and integrity validation.
+- Forbidden development-file checks for release packages.
+- Mandatory bilingual release-note validation before publishing.
+- Expanded `docs/COMPATIBILITY.md` for OpenCart 3 and PHP compatibility levels.
+- `docs/UPGRADE.md` with upgrade procedures for existing 1.0.1–1.4.0 installations.
+- `docs/REGRESSION_CHECKLIST.md` covering storefront, administration, SEO, enquiries, security and GDPR acceptance checks.
+
+#### Changed
+- The release workflow now validates the built package before tag and Release creation.
+- The OpenCart 3 line is designated as stable version `1.5.0`.
+- Development stage advanced to Stage 10.
+- README now documents the stable release, compatibility and upgrade process.
+
+#### Architecture decisions
+- The PHP CI matrix provides syntax-level compatibility evidence; runtime compatibility still depends on the exact OpenCart build, PHP stack, theme and other OCMOD extensions.
+- The runtime regression checklist remains the production acceptance gate.
+- OpenCart 4 will use a separate package/integration layer on top of the stable OpenCart 3 domain contract.
+
 ## [1.4.0] - 2026-08-26
 
 ### Български
