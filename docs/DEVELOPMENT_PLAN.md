@@ -43,29 +43,29 @@ Multilingual section SEO, configurable provider, `BreadcrumbList`, sitemap metad
 ## Stage 9 — Performance, security and GDPR
 Status: Completed in `1.4.0`
 
-- automatic catalogue cache invalidation after category/service/settings mutations
-- configurable store/IP enquiry rate limiting
-- configurable file count, file size and extension policy
-- extension + MIME validation before upload persistence
-- random filenames under `DIR_STORAGE/upload/`
-- permission-protected secure attachment downloads
-- physical file cleanup on delete/anonymize
-- per-enquiry GDPR JSON export
-- per-enquiry anonymization
-- configurable retention period and bulk anonymization of older enquiries
-- composite indexes for assignee workflow, rate limiting and customer/date lookups
-- BG/EN administration and storefront security messages
+Rate limiting, hardened uploads, secure downloads, GDPR export/anonymization, retention, cache invalidation and performance indexes.
 
 ## Stage 10 — Stable OpenCart 3 release
-Status: Next
+Status: In progress for `1.5.0`
 
-- compatibility matrix validation across supported OpenCart 3 releases
-- PHP compatibility pass
-- install/upgrade/migration tests from 1.0.1, 1.1.0, 1.2.0 and 1.3.0
-- OCMOD conflict review against standard OpenCart files
-- database schema consistency checks
-- storefront/admin regression checklist
-- final stable documentation and upgrade guide
+Completed in the stabilization branch:
+
+- PHP syntax CI matrix for 7.3, 7.4, 8.0, 8.1, 8.2 and 8.3
+- OCMOD/package source contract validation
+- installation ZIP integrity and forbidden-file validation
+- bilingual release-metadata validation before packaging
+- explicit OpenCart 3 compatibility levels and upgrade contract
+- upgrade guide for 1.0.1 → current through 1.4.0 → current
+- comprehensive storefront/admin/SEO/security regression checklist
+- OCMOD anchor review started against official OpenCart 3 core files
+
+Remaining release gate:
+
+- complete standard-core anchor review across representative 3.0.2.x and 3.0.3.x versions
+- run documented runtime install/upgrade regression cases on test OpenCart instances
+- fix any runtime regressions discovered
+- finalize 1.5.0 bilingual CHANGELOG, README and release notes
+- PR validation, squash merge and automated `v1.5.0` release
 
 ## Stage 11 — OpenCart 4 edition
 Status: Planned
